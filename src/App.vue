@@ -1,12 +1,12 @@
-<template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+<template lang="pug">
+  #app
+    sidebar
+    router-view
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: 'app'
 };
 </script>
 
