@@ -1,19 +1,23 @@
 import Vue from 'vue';
-import App from './App';
-import Sidebar from './components/Sidebar';
-import router from './router';
-
+import 'font-awesome/css/font-awesome.css';
 import '../semantic/dist/semantic.min.css';
 import '../semantic/dist/semantic.min';
 
-
-Vue.component('sidebar', Sidebar);
-Vue.config.productionTip = false;
+import App from './App';
+import store from './store';
+import router from './router';
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   template: '<App/>',
   components: { App },
+  mounted: () => {
+    $('.ui.sidebar').sidebar({
+      context: '#app',
+      transition: 'push'
+    });
+  },
+  router,
+  store
 });

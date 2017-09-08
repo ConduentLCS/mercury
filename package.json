@@ -5,7 +5,7 @@
   "author": "Andrew Fake <andrew.fake@clcs.conduent.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "node --debug-brk=5858 build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
@@ -26,8 +26,10 @@
     "metrics"
   ],
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "vue": "^2.3.3",
-    "vue-router": "^2.6.0"
+    "vue-router": "^2.6.0",
+    "vuex": "^2.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

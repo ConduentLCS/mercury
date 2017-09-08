@@ -38,6 +38,8 @@ module.exports = {
     }],
     'comma-dangle': 'off',
     // allow debugger during development
+    'no-console': 'warn',
+    'no-param-reassign': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
   }
 }

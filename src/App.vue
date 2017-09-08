@@ -1,13 +1,16 @@
 <template lang="pug">
-  #app
+  #app.pushable
     sidebar
-    router-view
+    .pusher
+      router-view
 </template>
 
 <script>
-export default {
-  name: 'app'
-};
+  import Sidebar from '@/components/Sidebar';
+
+  export default {
+    components: { Sidebar }
+  };
 </script>
 
 <style lang="scss">
