@@ -15,14 +15,15 @@
           i.fa.fa-send
           | Topics
         .content
-          br(v-for="n in 10")
+          topics
 </template>
 
 <script>
   import Datacenters from '@/components/DatacenterList';
+  import Topics from '@/components/TopicList';
 
   export default {
-    components: { Datacenters }
+    components: { Datacenters, Topics }
   };
 </script>
 
@@ -49,12 +50,12 @@
     flex: 1 0;
     flex-direction: column;
     .clusters {
-      padding: 0.4em 1em;
-      flex-grow: 2
+      padding: 0.4em 1em 1.8em;
+      flex: 1 1 60%
     }
     .topics {
-      padding: 0.4em 1em;
-      flex-grow: 1
+      padding: 0.3em 0.6em;
+      flex: 1 1 40%;
     }
     .title {
       font-size: 1.6em;

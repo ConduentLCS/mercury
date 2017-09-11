@@ -1,7 +1,13 @@
 <template lang="pug">
-  .ui.container
-    h1(v-if="datacenter") {{ datacenter }}
-    h1(v-else) SELECT A DATACENTER
+  .ui.grid
+    .four.wide.column
+      | 1
+    .four.wide.column
+      | 2
+    .four.wide.column
+      | 3
+    .four.wide.column
+      | 4
 </template>
 
 <script>
