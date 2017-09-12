@@ -17,10 +17,12 @@
   html, body {
     background-color: #EFEFEF;
   }
-
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  .ui.visible.sidebar ~ .pusher {
+    width: calc(100% - 260px);
   }
 </style>

@@ -38,13 +38,11 @@
       border-bottom-color: #FFF;
     }
   }
-
   .logo {
     display: inherit;
     justify-content: center;
     margin: 0.3em 0;
   }
-
   .container {
     display: inherit;
     flex: 1 0;
