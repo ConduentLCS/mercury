@@ -7,9 +7,9 @@
     transition-group.ui.middle.aligned.inverted.selection.list(name="list" tag="div")
       .item(
           v-for="topic in filteredTopics"
-          v-bind:key="topic.name"
           v-on:click="setTopic(topic.name)"
-          v-bind:class="{ active: active(topic.name) }"
+          :key="topic.name"
+          :class="{ active: active(topic.name) }"
       )
         .content
           .header

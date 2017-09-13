@@ -5,12 +5,22 @@
     .text
       .count {{ count }}
       .label {{ title }}
-
 </template>
 
 <script>
   export default {
-    props: ['icon', 'title', 'color', 'count']
+    props: {
+      icon: {
+        type: String,
+        required: true
+      },
+      color: String,
+      count: {
+        type: [Number, String],
+        default: 'N/A'
+      },
+      title: String
+    }
   };
 </script>
 
@@ -18,10 +28,11 @@
   .widget {
     display: flex;
     background: #FFF;
-    height: 9.5em;
+    height: 7.2em;
     box-shadow: 0 0 0 1px #d4d4d5, 
       0 2px 4px 0 rgba(34,36,38,.12), 
       0 2px 10px 0 rgba(34,36,38,.15);
+    border-radius: 4px;
     @media (max-width: 425px) {
       height: 5em;
     }
@@ -31,15 +42,17 @@
       justify-content: center;
       flex-basis: 40%;
       background: tomato;
+      border-radius: 4px 0 0 4px;
       i.fa { 
         font-size: 3.5em;
         color: #FFF;
         padding: 5px;
+        text-shadow: 1px 1px 0px #232323;
       }
-      &.green { background: #4CAF50 }
-      &.red { background: #F44336}
-      &.blue { background: #2196F3 }
-      &.yellow { background: #FFEB3B}
+      &.green { background: #9CCC65 }
+      &.red { background: #EF5350 }
+      &.blue { background: #42A5F5 }
+      &.yellow { background: #FFD54F}
     }
     .text {
       display: flex;
@@ -48,13 +61,12 @@
       flex-basis: 60%;
       padding: 1em;
       .count {
-        font-size: 4em;
-        font-weight: bold;;
+        font-size: 3.3em;
         @media (max-width: 1440px) {
-          font-size: 3em;
+          font-size: 2.8em;
         }
         @media (max-width: 425px) {
-          font-size: 2em;
+          font-size: 1.8em;
         }
       }
       .label {
