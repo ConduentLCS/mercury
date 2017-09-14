@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-containers=`docker ps -a -q`
+containers=`sudo docker ps -a -q`
 
 if [[ ! -z "$containers" ]];
     then
         echo "Stopping docker containers"
-        docker stop $containers
+        sudo docker stop $containers
 
         echo "Removing docker containers"
-        docker rm $containers
+        sudo docker rm $containers
 
         echo "cleaning docker 'docker system prune -a -f'"
-        docker system prune -a -f
+        sudo docker system prune -a -f
 else
         echo "No active containers running"
 fi

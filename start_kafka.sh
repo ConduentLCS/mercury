@@ -3,7 +3,7 @@
 # start a kafka cluster using docker
 #
 
-# Create a docker virtual machine to start kafka cluster 
+# Create a docker virtual machine to start kafka cluster
 docker-machine create --driver virtualbox --virtualbox-memory 6000 confluent
 
 # start the docker machine
@@ -24,13 +24,13 @@ fi
 
 echo `pwd`
 
-docker-compose create
+sudo docker-compose create
 
-docker-compose start
+sudo docker-compose start
 
-docker-compose ps
+sudo docker-compose ps
 
-docker ps -a
+sudo docker ps -a
 
 
 
