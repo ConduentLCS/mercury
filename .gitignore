@@ -10,3 +10,7 @@ project/target
 /.settings
 /RUNNING_PID
 .history
+target
+tmp
+dist
+.cache
