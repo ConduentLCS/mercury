@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-121.57212829589844 -150.72463989257812 138.3848876953125 229.5640106201172" width="138.3848876953125" height="229.5640106201172" xmlns="http://www.w3.org/2000/svg">
+  <g id="layer1" transform="matrix(4.282218933105469, 0, 0, 4.282218933105469, -1653.5572509765625, -2199.09716796875)">
+    <path style="opacity: 1; color: black; fill-opacity: 1; fill-rule: evenodd; stroke-linecap: butt; stroke-linejoin: miter; marker: none; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0; stroke-opacity: 1; visibility: visible; display: inline; overflow: visible; fill: none; stroke-width: 5.35159; stroke: rgb(227, 125, 0);" id="path3058" d="M 112 36.5 A 11.5 11.5 0 1 1  89,36.5 A 11.5 11.5 0 1 1  112 36.5 z" transform="matrix(0.96,0,0,0.96,277.357,466.9525)"/>
+    <path style="opacity: 1; color: black; fill: none; fill-opacity: 1; fill-rule: evenodd; stroke-linecap: butt; stroke-linejoin: miter; marker: none; stroke-miterlimit: 4; stroke-dasharray: none; stroke-dashoffset: 0; stroke-opacity: 1; visibility: visible; display: inline; overflow: visible; stroke-width: 5.13752; stroke: rgb(227, 125, 0);" id="path3060" d="M 383.205 481.727 C 382.516 488.871 374.352 492.59 368.51 488.422 C 366.311 486.853 364.901 484.407 364.644 481.718"/>
+    <path style="fill: none; fill-opacity: 0.75; fill-rule: evenodd; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-opacity: 1; stroke-width: 5.13752; stroke: rgb(227, 125, 0);" d="M 373.632 514.396 L 373.714 529.617" id="path3062" transform="matrix(-1, 0, 0, -1, 747.345948, 1044.012941)"/>
+    <path style="fill: none; fill-opacity: 0.75; fill-rule: evenodd; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 4; stroke-dasharray: none; stroke-opacity: 1; stroke-width: 5.13752; stroke: rgb(227, 125, 0);" d="M 366.76 523.527 L 380.742 523.637" id="path3937"/>
+  </g>
+</svg>

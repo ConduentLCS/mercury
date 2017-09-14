@@ -1,10 +1,10 @@
 <template lang="pug">
   #dashboard
     .ui.basic.segment
-      .widgets.ui.grid
+      #widgets.ui.grid
         .sixteen.wide.mobile.eight.wide.tablet.four.wide.computer.column(v-for="widget in widgets")
           widget(:icon="widget.icon" :color="widget.color" :title="widget.title" :count="widget.count")
-      .services.ui.grid
+      #services.ui.grid
         .column
           .ui.raised.card
             .content.head
@@ -32,6 +32,7 @@
             .content
               .description
                 consumers
+      topicExplorer
 </template>
 
 <script>
@@ -39,6 +40,7 @@
   import Zookeepers from '@/components/ZookeeperList';
   import Brokers from '@/components/BrokerList';
   import Consumers from '@/components/ConsumerList';
+  import TopicExplorer from '@/components/TopicExplorer';
 
   export default {
     data() {
@@ -56,7 +58,7 @@
         return this.$store.state.datacenter;
       }
     },
-    components: { Widget, Zookeepers, Brokers, Consumers }
+    components: { Widget, Zookeepers, Brokers, Consumers, TopicExplorer }
   };
 </script>
 
@@ -65,8 +67,8 @@
     .ui.basic.segment {
       min-height: 100vh;
     }
-    .services.grid {
-      margin-top: 3em;
+    #services.grid {
+      margin-top: 2.2em;
       &>.column {
         display: flex !important;
         justify-content: center;

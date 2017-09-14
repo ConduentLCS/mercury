@@ -6,7 +6,7 @@
         i.search.icon
     .ui.middle.aligned.selection.list
       .item(
-          v-for="consumer in consumers"
+          v-for="consumer in filteredConsumers"
           :key="consumer.group"
       )
         .content
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+  import search from 'fuzzysearch';
+
   export default {
     data() {
       return {
@@ -34,6 +36,11 @@
           { group: 'review.app', topics: 5 }
         ]
       };
+    },
+    computed: {
+      filteredConsumers() {
+        return this.consumers.filter(({ group }) => search(this.query, group));
+      }
     }
   };
 </script>

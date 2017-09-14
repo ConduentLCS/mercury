@@ -1,6 +1,8 @@
 <template lang="pug">
   .ui.sidebar.visible.inverted.vertical.left
-    h1.logo Mercury
+    h1.brand
+      | Mercury
+      img.logo(:src="logo")
     .ui.divider
     .container
       .clusters
@@ -21,8 +23,14 @@
 <script>
   import Datacenters from '@/components/DatacenterList';
   import Topics from '@/components/TopicList';
+  import Logo from '../../static/logo.svg';
 
   export default {
+    data() {
+      return {
+        logo: Logo
+      };
+    },
     components: { Datacenters, Topics }
   };
 </script>
@@ -38,10 +46,14 @@
       border-bottom-color: #FFF;
     }
   }
-  .logo {
+  .brand {
     display: inherit;
     justify-content: center;
     margin: 0.3em 0;
+    .logo {
+      height: 1.5em;
+      margin-left: 0.2em;
+    }
   }
   .container {
     display: inherit;
