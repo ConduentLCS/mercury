@@ -32,7 +32,6 @@
             .content
               .description
                 consumers
-      topicExplorer
 </template>
 
 <script>
@@ -40,7 +39,6 @@
   import Zookeepers from '@/components/ZookeeperList';
   import Brokers from '@/components/BrokerList';
   import Consumers from '@/components/ConsumerList';
-  import TopicExplorer from '@/components/TopicExplorer';
 
   export default {
     data() {
@@ -58,7 +56,7 @@
         return this.$store.state.datacenter;
       }
     },
-    components: { Widget, Zookeepers, Brokers, Consumers, TopicExplorer }
+    components: { Widget, Zookeepers, Brokers, Consumers }
   };
 </script>
 

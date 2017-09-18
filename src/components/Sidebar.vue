@@ -17,7 +17,10 @@
           i.fa.fa-send
           | Topics
         .content
-          topics
+          topics(v-if="datacenter")
+          .no.datacenter(v-else)
+            | Select a Datacenter
+
 </template>
 
 <script>
@@ -30,6 +33,11 @@
       return {
         logo: Logo
       };
+    },
+    computed: {
+      datacenter() {
+        return this.$store.state.datacenter;
+      }
     },
     components: { Datacenters, Topics }
   };
