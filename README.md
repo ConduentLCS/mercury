@@ -11,7 +11,7 @@ Mercury
 
 Run the start_kafka.sh script to start docker instance 
 
-##### Starting a kafka cluster single node zoookeper & kafka
+##### Starting a kafka cluster single node zookeeper & kafka
 
 ```bash
 ./start_kafka.sh 
