@@ -1,0 +1,13 @@
+type Cluster {
+  env: String!
+  description: String!
+}
+
+type Query {
+  allClusters: [Cluster]
+}
+
+schema {
+  query: Query
+}
+
