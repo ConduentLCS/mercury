@@ -1,16 +1,16 @@
 package models;
 
 public class Cluster {
-    private final String env;
+    private final String datacenter;
     private final String description;
 
-    public Cluster(String env, String description) {
-        this.env = env;
+    public Cluster(String datacenter, String description) {
+        this.datacenter = datacenter;
         this.description = description;
     }
 
-    public String getEnv() {
-        return env;
+    public String getDatacenter() {
+        return datacenter;
     }
 
     public String getDescription() {

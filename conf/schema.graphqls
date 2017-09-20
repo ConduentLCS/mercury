@@ -1,10 +1,10 @@
 type Cluster {
-  env: String!
+  datacenter: String!
   description: String!
 }
 
 type Query {
-  allClusters: [Cluster]
+  clusters: [Cluster]
 }
 
 schema {

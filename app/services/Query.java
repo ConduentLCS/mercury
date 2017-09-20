@@ -14,7 +14,7 @@ public class Query implements GraphQLQueryResolver {
         this.clusterRepository = clusterRepository;
     }
 
-    public List<Cluster> allClusters() {
+    public List<Cluster> clusters() {
         return clusterRepository.getAllClusters();
     }
 }
