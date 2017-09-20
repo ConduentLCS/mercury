@@ -47,4 +47,21 @@ public class GraphQLController extends Controller {
 
     }
 
+    public Result handlePostedQuery(){
+        String query = request().body().asJson().get("query").textValue();
+
+        ClusterRepository clusterRepository = new ClusterRepository();
+        GraphQLSchema graphQLSchema =  SchemaParser.newParser()
+                                                    .file("schema.graphqls")
+                                                    .resolvers(new Query(clusterRepository))
+                                                    .build()
+                                                    .makeExecutableSchema();
+
+        GraphQL build = GraphQL.newGraphQL(graphQLSchema).build();
+        ExecutionResult executionResult = build.execute(query);
+
+        return  ok(Json.toJson(executionResult.toSpecification()));
+
+    }
+
 }
