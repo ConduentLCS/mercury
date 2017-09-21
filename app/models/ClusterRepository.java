@@ -1,32 +1,32 @@
 package models;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigValue;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ClusterRepository {
         private final List<Cluster> clusters;
-
+        private final Config applicationConfig;
+    
         public ClusterRepository() {
-            clusters = new ArrayList<>();
-            //add some clusters to start off with
-            clusters.add(new Cluster("DEV", "Dev Cluster"));
-            clusters.add(new Cluster("QA", "QA Cluster"));
+            this.clusters = new ArrayList<>();
+            this.applicationConfig = ConfigFactory.load();
         }
 
         public List<Cluster> getAllClusters() {
-            File file = new File("conf/cluster.conf");
-            Config config = ConfigFactory.parseFile(file);
+            File file = new File(this.applicationConfig.getString("cluster.config.path"));
+            Config clusterConfig = ConfigFactory.parseFile(file);
 
-            Config clusterConfig = config.getConfig("clusters");
+            List<Config> clusterList = (List<Config>) clusterConfig.getConfigList("clusters");
 
-            System.out.println(clusterConfig);
+            for (Config config: clusterList) {
+                 Cluster cluster = new Cluster(config.getString("datacenter"), config.getString("description"), config.getString("broker_list")) ;
+                 clusters.add(cluster);
+            }
+            
             return clusters;
         }
 

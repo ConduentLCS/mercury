@@ -1,6 +1,7 @@
 type Cluster {
   datacenter: String!
   description: String!
+  broker_list: String!
 }
 
 type Query {
