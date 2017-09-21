@@ -1,0 +1,14 @@
+type Cluster {
+  datacenter: String!
+  description: String!
+  kafkaBroker: String!
+}
+
+type Query {
+  clusters: [Cluster]
+}
+
+schema {
+  query: Query
+}
+
