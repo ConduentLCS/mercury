@@ -3,17 +3,17 @@ package models;
 public class Cluster {
     private final String datacenter;
     private final String description;
-    private final String broker_list;
+    private final String kafkaBroker;
 
     /**
      * @param datacenter
      * @param description
      * @param broker_list
      */
-    public Cluster(String datacenter, String description, String broker_list) {
+    public Cluster(String datacenter, String description, String kafkaBroker) {
         this.datacenter = datacenter;
         this.description = description;
-        this.broker_list = broker_list;
+        this.kafkaBroker = kafkaBroker;
     }
 
     public String getDatacenter() {
@@ -25,6 +25,6 @@ public class Cluster {
     }
 
     public  String getBrokerList(){
-        return broker_list;
+        return kafkaBroker;
     }
 }

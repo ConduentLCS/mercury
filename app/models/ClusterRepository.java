@@ -25,7 +25,7 @@ public class ClusterRepository {
             for (Config config: clusterList) {
                  Cluster cluster = new Cluster( config.getString("datacenter"),
                                                 config.getString("description"),
-                                                config.getString("broker_list") );
+                                                config.getString("kafkaBroker") );
                  clusters.add(cluster);
             }
             

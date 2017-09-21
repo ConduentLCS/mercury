@@ -1,7 +1,7 @@
 type Cluster {
   datacenter: String!
   description: String!
-  broker_list: String!
+  kafkaBroker: String!
 }
 
 type Query {
