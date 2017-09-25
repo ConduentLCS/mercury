@@ -5,7 +5,7 @@
     line-fg-color="#E37D00"
     line-bg-color="#262B33"
   )
-  .clusters.ui.form(v-else)
+  .cluster-list.ui.form(v-else)
     .grouping(v-for="(clusters, datacenter) in grouped")
       | {{ datacenter }}
       .grouped.fields

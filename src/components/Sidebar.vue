@@ -9,13 +9,13 @@
         | Clusters
         i.fa.fa-minus-circle.indicator(v-if="!index")
         i.fa.fa-plus-circle.indicator(v-else)
-      clusters.active.content
+      clusters#clusters.active.content
       .title(@click="setIndex(1)")
         i.fa.fa-send.symbol
         | Topics
         i.fa.fa-minus-circle.indicator(v-if="index")
         i.fa.fa-plus-circle.indicator(v-else)
-      topics.content(v-if="cluster")
+      topics#topics.content(v-if="cluster")
       .no.cluster.content(@click="setIndex(0)" v-else)
         .hint
           | Select a Cluster
@@ -45,7 +45,7 @@
     },
     methods: {
       setIndex(i) {
-        if ($('.accordion .vue-simple-spinner').length) return;
+        if ($('#clusters .vue-simple-spinner').length) return;
         this.index = i;
         $('.ui.accordion').accordion('open', i);
       }

@@ -1,57 +1,58 @@
 <template lang="pug">
-  #topic-explorer(:class="{maximized: isMaximized}")
-    .toolbar
-      .details
-        | Topic: #[b {{ this.topic }}] -
-        | Offset: #[b {{ this.offset }}]
-      .options
-        i.pause.link.tail.icon(
-          v-if="isTailing"
-          @click="toggleTail"
-          title="Pause Feed"
-        )
-        i.play.link.tail.icon(
-          v-else
-          @click="toggleTail"
-          title="Resume Feed"
-        )
-        .ui.icon.input
-          input(type="text" placeholder="Filter..." v-model="filter")
-          i.filter.icon
-        .ui.mini.yellow.circular.icon.button(
-          title="Minimize"
-          @click="minimize"
-        )
-          i.minus.icon
-        .ui.mini.green.circular.icon.button(
-          title="Maximize"
-          @click="maximize"
-        )
-          i.plus.icon
-    .console(:class="{inspect: showViewer}")
-      .list
-        .message(
-          v-for="message in messages"
-          @click="inspect(message)"
-        )
-          | {{ message.data | limit }}
-          .meta
-            .offset
-              | Offset: {{ message.offset }} |
-              | Partition: {{ message.partition }}
-            .time
-              | {{ message.timestamp | date }}
-      pre.viewer
-        i.large.window.close.link.icon(
-          title="Close Viewer"
-          @click="closeViewer"
-        )
-        .content(v-html="pretty")
-        .details(v-if="this.message")
-          span.offset
-            | Offset: {{ this.message.offset }}
-          span.time
-            | {{ this.message.timestamp | date }}
+  transition(name="slide")
+    #topic-explorer(:class="{maximized: isMaximized}")
+      .toolbar
+        .details
+          | Topic: #[b {{ this.topic.name | ucfirst }}] -
+          | Offset: #[b {{ this.topic.offset.toLocaleString() }}]
+        .options
+          i.pause.link.tail.icon(
+            v-if="isTailing"
+            @click="toggleTail"
+            title="Pause Feed"
+          )
+          i.play.link.tail.icon(
+            v-else
+            @click="toggleTail"
+            title="Resume Feed"
+          )
+          .ui.icon.input
+            input(type="text" placeholder="Filter..." v-model="filter")
+            i.filter.icon
+          .ui.mini.yellow.circular.icon.button(
+            title="Minimize"
+            @click="minimize"
+          )
+            i.minus.icon
+          .ui.mini.green.circular.icon.button(
+            title="Maximize"
+            @click="maximize"
+          )
+            i.plus.icon
+      .console(:class="{inspect: showViewer}")
+        .list
+          .message(
+            v-for="message in messages"
+            @click="inspect(message)"
+          )
+            | {{ message.data | limit }}
+            .meta
+              .offset
+                | Offset: {{ message.offset }} |
+                | Partition: {{ message.partition }}
+              .time
+                | {{ message.timestamp | date }}
+        pre.viewer
+          i.large.window.close.link.icon(
+            title="Close Viewer"
+            @click="closeViewer"
+          )
+          .content(v-html="pretty")
+          .details(v-if="this.message")
+            span.offset
+              | Offset: {{ this.message.offset }}
+            span.time
+              | {{ this.message.timestamp | date }}
 </template>
 
 <script>
@@ -62,8 +63,6 @@
     data() {
       return {
         filter: '',
-        topic: 'User',
-        offset: 30,
         message: null,
         showViewer: false,
         isMaximized: false,
@@ -81,6 +80,9 @@
         } catch (e) {
           return '<div class="issue">Message cannot be parsed</div>';
         }
+      },
+      topic() {
+        return this.$store.state.topic;
       }
     },
     methods: {
@@ -116,7 +118,10 @@
         }
 
         return '';
-      }
+      },
+      ucfirst: str => (
+        str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+      )
     }
   };
 </script>
@@ -253,5 +258,15 @@
         }
       }
     }
+  }
+  .slide-leave-active,
+  .slide-enter-active {
+    transition: 0.3s;
+  }
+  .slide-enter {
+    transform: translateY(100%);
+  }
+  .slide-leave-to {
+    transform: translateY(100%);
   }
 </style>

@@ -44,22 +44,21 @@
   import Consumers from '@/components/ConsumerList';
 
   export default {
-    data() {
-      return {
-        widgets: [
-          { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: 9 },
-          { icon: 'fa fa-handshake-o', color: 'blue', title: 'Brokers', count: 6 },
-          { icon: 'fa fa-list', color: 'yellow', title: 'Topics', count: 54 },
-          { icon: 'fa fa-users', color: 'green', title: 'Consumers', count: 182 }
-        ]
-      };
-    },
     computed: {
       cluster() {
         return this.$store.state.cluster;
       },
       topic() {
         return this.$store.state.topic;
+      },
+      widgets() {
+        const topicCount = this.$store.state.topicCount;
+        return [
+          { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: 9 },
+          { icon: 'fa fa-handshake-o', color: 'blue', title: 'Brokers', count: 6 },
+          { icon: 'fa fa-list', color: 'yellow', title: 'Topics', count: topicCount },
+          { icon: 'fa fa-users', color: 'green', title: 'Consumers', count: 182 }
+        ];
       }
     },
     components: { Widget, Zookeepers, Brokers, Consumers }
@@ -99,6 +98,7 @@
       flex-wrap: wrap;
       margin: 2.2em 0;
       height: 8em;
+      color: #767676;
       font-size: 2em;
       i { margin-right: 0.5em }
       @media(max-width: 425px) {

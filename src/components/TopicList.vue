@@ -1,73 +1,98 @@
 <template lang="pug">
-  .topiclist
-    .ui.fluid.search
-      .ui.icon.input
-        input(type="text" placeholder="Search Topics..." v-model="query")
-        i.search.icon
-    .ui.middle.aligned.inverted.selection.list
-      .item(
-          v-for="topic in filteredTopics"
-          v-on:click="setTopic(topic.name)"
-          :key="topic.name"
-          :class="{ active: active(topic.name) }"
-      )
-        .content
-          .header
-            | {{ topic.name }}
-            i.check.icon(v-if="active(topic.name)")
-          .description Offset: #[b {{ topic.offset }}] / Partitions: #[b {{ topic.partitions }}]
+  .topic-list
+    spinner.spinner(
+      v-if="loading > 0"
+      size="medium"
+      line-fg-color="#E37D00"
+      line-bg-color="#262B33"
+    )
+    template(v-else)
+      .ui.fluid.search
+        .ui.icon.input
+          input(type="text" placeholder="Search Topics..." v-model="query")
+          i.search.icon
+      .ui.middle.aligned.inverted.selection.list
+        .item(
+            v-for="topic in filteredTopics"
+            v-on:click="setTopic(topic)"
+            :key="topic.name"
+            :class="{ active: active(topic.name) }"
+        )
+          .content
+            .header
+              | {{ topic.name }}
+              i.check.icon(v-if="active(topic.name)")
+            .description Offset: #[b {{ topic.offset }}] / Partitions: #[b {{ topic.partitions }}]
 </template>
 
 <script>
+  import Spinner from 'vue-simple-spinner';
   import search from 'fuzzysearch';
+  import gql from 'graphql-tag';
 
   export default {
+    apollo: {
+      topics: {
+        query: gql`query Topics($address: String!) {
+          cluster(address: $address) {
+            topics {
+              name
+              offset
+              partitions
+            }
+          }
+        }`,
+        variables() {
+          return {
+            address: this.$store.state.cluster
+          };
+        },
+        update(data) {
+          return data.cluster.topics;
+        },
+        result(res) {
+          if (!res.loading) {
+            const topics = res.data.cluster.topics;
+            this.$store.commit('updateTopicCount', topics.length);
+          }
+        }
+      }
+    },
     data() {
       return {
         query: '',
-        topics: [
-          { name: 'email', offset: 7126, partitions: 3 },
-          { name: 'user', offset: 1263, partitions: 2 },
-          { name: 'database', offset: 8723, partitions: 4 },
-          { name: 'app', offset: 9421, partitions: 2 },
-          { name: 'events', offset: 7231, partitions: 3 },
-          { name: 'async', offset: 532, partitions: 3 },
-          { name: 'log', offset: 72635, partitions: 3 },
-          { name: 'highlight', offset: 986, partitions: 3 },
-          { name: 'tasks', offset: 283, partitions: 3 },
-          { name: 'search', offset: 8623, partitions: 3 },
-          { name: 'tags', offset: 6234, partitions: 3 }
-        ]
+        loading: 0
       };
     },
     computed: {
       filteredTopics() {
+        if (!this.topics) return [];
         return this.topics.filter(({ name }) => search(this.query, name));
       },
-      topic: {
-        get() {
-          return this.$store.state.topic;
-        },
-        set(topic) {
-          this.$store.commit('changeTopic', topic);
-        }
+      topic() {
+        return this.$store.state.topic;
       }
     },
     methods: {
       setTopic(topic) {
+        if (this.topic && (this.topic.name === topic.name)) {
+          topic = null;
+        }
+
         this.$store.commit('changeTopic', topic);
       },
       active(topic) {
-        return this.topic === topic;
+        if (!this.topic) return false;
+        return this.topic.name === topic;
       }
-    }
+    },
+    components: { Spinner }
   };
 </script>
 
 <style lang="scss" scoped>
-  .topiclist {
-    display: flex;
-    flex-direction: column;
+  .topic-list {
+    .spinner { padding: 0 0 1em }
     .ui.input {
       width: 100%;
       padding: 0 0.5em;
