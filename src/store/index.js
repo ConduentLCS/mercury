@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    datacenter: null,
+    cluster: null,
     topic: null,
     messages: [
       { offset: 1,
@@ -137,8 +137,8 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-    changeDatacenter(state, datacenter) {
-      state.datacenter = datacenter;
+    changeCluster(state, cluster) {
+      state.cluster = cluster;
     },
     changeTopic(state, topic) {
       state.topic = topic;

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import debounce from 'debounce';
+import { ApolloClient, createNetworkInterface } from 'apollo-client';
+import VueApollo from 'vue-apollo';
 import 'font-awesome/css/font-awesome.css';
 import '../semantic/dist/semantic.min.css';
 import '../semantic/dist/semantic.min';
@@ -7,6 +9,21 @@ import '../semantic/dist/semantic.min';
 import App from './App';
 import store from './store';
 import router from './router';
+
+const apolloClient = new ApolloClient({
+  networkInterface: createNetworkInterface({
+    uri: 'http://localhost:4000/graphql'
+  })
+});
+
+Vue.use(VueApollo);
+
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+  defaultOptions: {
+    $loadingKey: 'loading'
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
@@ -35,5 +52,6 @@ new Vue({
     }, 250));
   },
   router,
-  store
+  store,
+  apolloProvider
 });

@@ -32,6 +32,9 @@
             .content
               .description
                 consumers
+        #explorer.hint(v-if="!topic")
+          i.fa.fa-terminal
+          | Select a Topic to Open Explorer
 </template>
 
 <script>
@@ -52,8 +55,11 @@
       };
     },
     computed: {
-      datacenter() {
-        return this.$store.state.datacenter;
+      cluster() {
+        return this.$store.state.cluster;
+      },
+      topic() {
+        return this.$store.state.topic;
       }
     },
     components: { Widget, Zookeepers, Brokers, Consumers }
@@ -84,6 +90,21 @@
         }
       }
       .content.head { flex-grow: 0 }
+    }
+    #explorer.hint {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 2.2em 0;
+      height: 8em;
+      font-size: 2em;
+      i { margin-right: 0.5em }
+      @media(max-width: 425px) {
+        text-align: center;
+        line-height: 2em;
+      }
     }
   }
 </style>

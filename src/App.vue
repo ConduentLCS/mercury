@@ -2,10 +2,10 @@
   #app.pushable
     sidebar
     .pusher
-      router-view(v-if="datacenter")
-      .no.datacenter(v-else)
+      router-view(v-if="cluster")
+      .no.cluster(v-else)
         i.fa.fa-sitemap
-        |  Select a Datacenter
+        |  Select a Cluster
       topicExplorer(v-if="topic")
 </template>
 
@@ -15,8 +15,8 @@
 
   export default {
     computed: {
-      datacenter() {
-        return this.$store.state.datacenter;
+      cluster() {
+        return this.$store.state.cluster;
       },
       topic() {
         return this.$store.state.topic;
@@ -35,7 +35,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  .pusher > .no.datacenter {
+  .pusher > .no.cluster {
     display: flex;
     flex: 1 0;
     justify-content: center;
@@ -46,5 +46,7 @@
   }
   .ui.visible.sidebar ~ .pusher {
     width: calc(100% - 260px);
+    overflow-y: auto;
+    height: 100vh;
   }
 </style>

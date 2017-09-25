@@ -173,13 +173,15 @@
     .console {
       display: flex;
       flex: 1;
+      overflow-x: hidden;
       &.inspect {
         .viewer>.window.close { display: block }
         &>.viewer { flex-basis: 25% }
         &>.list { flex-basis: 75% }
       }
       .list {
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         flex-shrink: 0;
         flex-basis: 100%;
         transition: flex-basis 0.3s ease;

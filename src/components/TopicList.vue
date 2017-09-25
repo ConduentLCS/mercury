@@ -4,7 +4,7 @@
       .ui.icon.input
         input(type="text" placeholder="Search Topics..." v-model="query")
         i.search.icon
-    transition-group.ui.middle.aligned.inverted.selection.list(name="list" tag="div")
+    .ui.middle.aligned.inverted.selection.list
       .item(
           v-for="topic in filteredTopics"
           v-on:click="setTopic(topic.name)"
@@ -66,8 +66,11 @@
 
 <style lang="scss" scoped>
   .topiclist {
+    display: flex;
+    flex-direction: column;
     .ui.input {
       width: 100%;
+      padding: 0 0.5em;
       font-size: 0.8em;
     }
     .ui.search .prompt {
@@ -87,9 +90,8 @@
       opacity: 0;
       transform: translateY(30px);
     }
-    .ui.list{ 
-      max-height: 18em;
-      overflow: auto;
+    .ui.list {
+      overflow: auto; 
       .item { margin-right: 2px }
     }
   }
