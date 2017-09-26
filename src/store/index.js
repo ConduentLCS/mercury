@@ -9,6 +9,7 @@ export default new Vuex.Store({
     topic: null,
     topics: [],
     zookeepers: [],
+    brokers: [],
     messages: [
       { offset: 1,
         partition: 4,
@@ -150,6 +151,9 @@ export default new Vuex.Store({
     },
     updateZookeepers(state, zks) {
       state.zookeepers = zks;
+    },
+    updateBrokers(state, brokers) {
+      state.brokers = brokers;
     }
   }
 });

@@ -11,25 +11,42 @@
           .description
             | Bytes: 
             i.fa.fa-arrow-up
-            b {{ broker.up }} 
+            b {{ broker.bytesUp }} 
             i.fa.fa-arrow-down
-            b {{ broker.down }}
+            b {{ broker.bytesDown }}
 </template>
 
 <script>
+  import gql from 'graphql-tag';
+
   export default {
-    data() {
-      return {
-        brokers: [
-          { hostname: 'kf-broker01.amicillc.com', up: 324, down: 482 },
-          { hostname: 'kf-broker02.amicillc.com', up: 723, down: 623 },
-          { hostname: 'kf-broker03.amicillc.com', up: 152, down: 912 },
-          { hostname: 'kf-broker04.amicillc.com', up: 178, down: 346 },
-          { hostname: 'kf-broker05.amicillc.com', up: 462, down: 622 },
-          { hostname: 'kf-broker06.amicillc.com', up: 836, down: 735 }
-        ]
-      };
-    }
+    apollo: {
+      brokers: {
+        query: gql` query Brokers($address: String!) {
+          cluster(address: $address) {
+            kafkaBrokers {
+              hostname
+              bytesUp
+              bytesDown
+            }
+          }
+        }`,
+        variables() {
+          return {
+            address: this.$store.state.cluster
+          };
+        },
+        update(data) {
+          return data.cluster.kafkaBrokers;
+        },
+        result(res) {
+          if (!res.loading) {
+            const brokers = res.data.cluster.kafkaBrokers;
+            this.$store.commit('updateBrokers', brokers);
+          }
+        }
+      }
+    },
   };
 </script>
 
