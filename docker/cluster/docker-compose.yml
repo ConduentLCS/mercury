@@ -71,6 +71,8 @@ services:
   kafka-3:
     image: confluentinc/cp-kafka:latest
     network_mode: host
+    ports:
+          - "9092:9092"
     depends_on:
       - zookeeper-1
       - zookeeper-2
