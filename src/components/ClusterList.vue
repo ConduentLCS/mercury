@@ -21,7 +21,7 @@
 
   export default {
     apollo: {
-      clusters: gql` query Clusters{
+      clusters: gql` query Clusters {
         clusters {
           datacenter
           address

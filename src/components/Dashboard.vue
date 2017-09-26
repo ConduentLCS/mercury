@@ -53,8 +53,10 @@
       },
       widgets() {
         const topicCount = this.$store.state.topics.length;
+        const zookeeperCount = this.$store.state.zookeepers.length;
+
         return [
-          { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: 9 },
+          { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: zookeeperCount },
           { icon: 'fa fa-handshake-o', color: 'blue', title: 'Brokers', count: 6 },
           { icon: 'fa fa-list', color: 'yellow', title: 'Topics', count: topicCount },
           { icon: 'fa fa-users', color: 'green', title: 'Consumers', count: 182 }

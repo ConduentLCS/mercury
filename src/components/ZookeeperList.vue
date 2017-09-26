@@ -16,24 +16,38 @@
 </template>
 
 <script>
+  import gql from 'graphql-tag';
+
   export default {
+    apollo: {
+      zookeepers: {
+        query: gql` query Zookeepers($address: String!) {
+          cluster(address: $address) {
+            zookeepers {
+              hostname
+              latency
+              isLeader
+            }
+          }
+        }`,
+        variables() {
+          return {
+            address: this.$store.state.cluster
+          };
+        },
+        update(data) {
+          return data.cluster.zookeepers;
+        },
+        result(res) {
+          if (!res.loading) {
+            const zookeepers = res.data.cluster.zookeepers;
+            this.$store.commit('updateZookeepers', zookeepers);
+          }
+        }
+      }
+    },
     mounted() {
       $('.fa-stack').popup({ inline: false });
-    },
-    data() {
-      return {
-        zookeepers: [
-          { hostname: 'zk-host01.amicillc.com', latency: 4, isLeader: true },
-          { hostname: 'zk-host02.amicillc.com', latency: 0, isLeader: false },
-          { hostname: 'zk-host03.amicillc.com', latency: 1, isLeader: false },
-          { hostname: 'zk-host04.amicillc.com', latency: 4, isLeader: false },
-          { hostname: 'zk-host05.amicillc.com', latency: 0, isLeader: false },
-          { hostname: 'zk-host06.amicillc.com', latency: 1, isLeader: false },
-          { hostname: 'zk-host07.amicillc.com', latency: 4, isLeader: false },
-          { hostname: 'zk-host08.amicillc.com', latency: 0, isLeader: false },
-          { hostname: 'zk-host09.amicillc.com', latency: 1, isLeader: false },
-        ]
-      };
     }
   };
 </script>

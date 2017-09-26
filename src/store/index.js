@@ -8,6 +8,7 @@ export default new Vuex.Store({
     cluster: null,
     topic: null,
     topics: [],
+    zookeepers: [],
     messages: [
       { offset: 1,
         partition: 4,
@@ -146,6 +147,9 @@ export default new Vuex.Store({
     },
     updateTopics(state, topics) {
       state.topics = topics;
+    },
+    updateZookeepers(state, zks) {
+      state.zookeepers = zks;
     }
   }
 });
