@@ -12,33 +12,46 @@
         .content
           .header
             | {{ consumer.group }}
-          .description Topics: #[b {{ consumer.topics }}]
+          .description Topics: #[b {{ consumer.topicCount }}]
 </template>
 
 <script>
   import search from 'fuzzysearch';
+  import gql from 'graphql-tag';
 
   export default {
+    apollo: {
+      consumers: {
+        query: gql` query Consumers($address: String!) {
+          cluster(address: $address) {
+            consumers {
+              group
+              topicCount
+            }
+          }
+        }`,
+        variables() {
+          return {
+            address: this.$store.state.cluster
+          };
+        },
+        update(data) {
+          return data.cluster.consumers;
+        },
+        result(res) {
+          if (!res.loading) {
+            const consumers = res.data.cluster.consumers;
+            this.$store.commit('updateConsumers', consumers);
+          }
+        }
+      }
+    },
     data() {
-      return {
-        query: '',
-        consumers: [
-          { group: 'email.service', topics: 1 },
-          { group: 'async.service', topics: 10 },
-          { group: 'portal.app', topics: 3 },
-          { group: 'compliance.app', topics: 4 },
-          { group: 'search.service', topics: 6 },
-          { group: 'highlight.service', topics: 1 },
-          { group: 'review.app', topics: 5 },
-          { group: 'redaction.service', topics: 2 },
-          { group: 'analytics.app', topics: 8 },
-          { group: 'review.app', topics: 5 },
-          { group: 'review.app', topics: 5 }
-        ]
-      };
+      return { query: '' };
     },
     computed: {
       filteredConsumers() {
+        if (!this.consumers) return [];
         return this.consumers.filter(({ group }) => search(this.query, group));
       }
     }
