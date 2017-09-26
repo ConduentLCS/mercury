@@ -1,11 +1,41 @@
-type Cluster {
+# Kafka Cluster input details
+input ClusterInput{
+  # Data center where the kafak cluster belongs to
   datacenter: String!
-  description: String!
+  # Alias for the kafka cluster
+  alias: String!
+  # Kafka Broker host list, separated by comma
   kafkaBroker: String!
 }
 
+# Kafka Cluster details
+type Cluster {
+  # Data center where the kafak cluster belongs to
+  datacenter: String!
+  # Alias for the kafka cluster
+  alias: String!
+  # Kafka Broker host list, separated by comma
+  kafkaBroker: String!
+  # topics belongs to kafka cluster
+  topics: [Topic]!
+}
+
+# Kafka Topic details
+type Topic {
+  name: String
+  # Latest offset, where the latest message gets added in.
+  latestOffset: Int
+  # Earliest offset, where the earliest(first) message is in. Difference between latest offset and Earliest offset will give the total number of messages.
+  earliestOffset: Int
+  # no of partitions available for that topic. Messages in a partition is ordered(a perfect queue FIFO).
+  noOfPartitions: Int
+}
+
 type Query {
+  # Get all clusters
   clusters: [Cluster]
+  # Get details about a cluster
+  cluster(clusterInput: ClusterInput): Cluster
 }
 
 schema {

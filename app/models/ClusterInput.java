@@ -1,36 +1,36 @@
 package models;
 
-import java.util.List;
-
-public class Cluster {
+public class ClusterInput {
     /**
      * Data center where this cluster belongs
      */
-    private final String datacenter;
+    private String datacenter;
 
     /**
      * Alias for the cluster
      */
-    private final String alias;
+    private String alias;
 
     /**
      * Kafka broker list separated by comma
      */
-    private final String kafkaBroker;
+    private String kafkaBroker;
 
     /**
-     * List of topics belong to the cluster
+     * ClusterInput Constructor
+     *
      */
-    private List<Topic> topicList;
+    public ClusterInput() {
+    }
 
     /**
-     * Cluster Constructor
+     * ClusterInput Constructor
      *
      * @param datacenter
      * @param alias
      * @param kafkaBroker
      */
-    public Cluster(String datacenter, String alias, String kafkaBroker) {
+    public ClusterInput(String datacenter, String alias, String kafkaBroker) {
         this.datacenter = datacenter;
         this.alias = alias;
         this.kafkaBroker = kafkaBroker;
@@ -66,21 +66,16 @@ public class Cluster {
         return kafkaBroker;
     }
 
-    /**
-     * Returns the list of topics belongs to the cluster
-     *
-     * @return topic list
-     * @see List
-     */
-    public List<Topic> getTopics() {
-        return topicList;
+    public void setDatacenter(String datacenter) {
+        this.datacenter = datacenter;
     }
 
-    /**
-     * Sets the topicList of a cluster
-     *
-     */
-    public void setTopicList(List<Topic> topicList) {
-        this.topicList = topicList;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
+
+    public void setKafkaBroker(String kafkaBroker) {
+        this.kafkaBroker = kafkaBroker;
+    }
+
 }

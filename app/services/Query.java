@@ -1,6 +1,7 @@
 package services;
 
 import models.Cluster;
+import models.ClusterInput;
 import models.ClusterRepository;
 
 import java.util.List;
@@ -16,5 +17,9 @@ public class Query implements GraphQLQueryResolver {
 
     public List<Cluster> clusters() {
         return clusterRepository.getAllClusters();
+    }
+
+    public Cluster cluster(ClusterInput clusterInput){
+        return clusterRepository.getClusterInfo(clusterInput);
     }
 }
