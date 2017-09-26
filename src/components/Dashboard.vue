@@ -52,7 +52,7 @@
         return this.$store.state.topic;
       },
       widgets() {
-        const topicCount = this.$store.state.topicCount;
+        const topicCount = this.$store.state.topics.length;
         return [
           { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: 9 },
           { icon: 'fa fa-handshake-o', color: 'blue', title: 'Brokers', count: 6 },

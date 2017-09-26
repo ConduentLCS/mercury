@@ -53,7 +53,7 @@
         result(res) {
           if (!res.loading) {
             const topics = res.data.cluster.topics;
-            this.$store.commit('updateTopicCount', topics.length);
+            this.$store.commit('updateTopics', topics);
           }
         }
       }

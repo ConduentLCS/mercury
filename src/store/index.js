@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     cluster: null,
     topic: null,
-    topicCount: 0,
+    topics: [],
     messages: [
       { offset: 1,
         partition: 4,
@@ -144,8 +144,8 @@ export default new Vuex.Store({
     changeTopic(state, topic) {
       state.topic = topic;
     },
-    updateTopicCount(state, count) {
-      state.topicCount = count;
+    updateTopics(state, topics) {
+      state.topics = topics;
     }
   }
 });
