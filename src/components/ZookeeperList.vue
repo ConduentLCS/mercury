@@ -1,21 +1,47 @@
 <template lang="pug">
   #zookeepers
-    .ui.middle.aligned.selection.list
-      .item(
-          v-for="zk in zookeepers"
-          :key="zk.hostname"
-      )
-        .content
-          .header
-            | {{ zk.hostname }}
-            template(v-if="zk.isLeader")
-              span.fa-stack(data-content="This node is currently the leader" data-position="top center")
-                i.fa.fa-square-o.fa-stack-2x
-                i.fa.fa-star.fa-stack-1x
-          .description Average Latency: #[b {{ zk.latency }}]
+    transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap")
+      .list(key="list" v-if="!this.inspecting")
+        .ui.middle.aligned.selection.list
+          .item(
+              v-for="zk in zookeepers"
+              :key="zk.hostname"
+              @click="inspect(zk.hostname)"
+          )
+            .content
+              .header
+                | {{ zk.hostname }}
+                template(v-if="zk.isLeader")
+                  span.fa-stack(data-content="This node is currently the leader" data-position="top center")
+                    i.fa.fa-square-o.fa-stack-2x
+                    i.fa.fa-star.fa-stack-1x
+              .description Average Latency: #[b {{ zk.latency }}]
+      .metrics(v-else key="individual")
+        .centered-container(v-if="loading > 0")
+          spinner.spinner(
+            size="medium"
+            line-fg-color="#E37D00"
+            line-bg-color="#FFF"
+          )
+        template(v-else)
+          h4.breadcrumb
+            i.link.arrow.left.icon(@click="inspect(null)")
+            | {{ this.inspecting }}
+          h3(v-if="!zookeeper.metrics")
+            | No Metrics
+          table.ui.very.basic.sortable.compact.stackable.celled.table(v-else)
+            thead
+              tr
+                th Metric
+                th Value
+            tbody
+              tr(v-for="metric in zookeeper.metrics")
+                td {{ metric.metric }}
+                td {{ metric.value }}
 </template>
 
 <script>
+  import Spinner from 'vue-simple-spinner';
   import gql from 'graphql-tag';
 
   export default {
@@ -44,19 +70,61 @@
             this.$store.commit('updateZookeepers', zookeepers);
           }
         }
+      },
+      zookeeper: {
+        query: gql` query Zookeeper($address: String!, $zookeeper: String!) {
+          cluster(address: $address) {
+            zookeeper(hostname: $zookeeper) {
+              metrics
+            }
+          }
+        }`,
+        variables() {
+          return {
+            address: this.$store.state.cluster,
+            zookeeper: this.inspecting
+          };
+        },
+        update(data) {
+          return data.cluster.zookeeper;
+        },
+        skip() {
+          return !this.inspecting;
+        }
       }
     },
-    mounted() {
-      $('.fa-stack').popup({ inline: false });
-    }
+    data() {
+      return {
+        inspecting: null,
+        loading: 0
+      };
+    },
+    methods: {
+      inspect(zookeeper) {
+        this.inspecting = zookeeper;
+      },
+      bootstrap() {
+        $('.fa-stack').popup({ inline: false });
+        $('#zookeepers .ui.table').tablesort();
+      }
+    },
+    updated() {
+      this.bootstrap();
+    },
+    components: { Spinner }
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #zookeepers {
+    h4 { color: #000 }
+    h3 {
+      text-align: center;
+      margin-top: 2em;
+    }
     .fa-stack {
       float: right;
-      i { color: #FFC107}
+      i { color: #FFC107 }
     }
   }
 </style>

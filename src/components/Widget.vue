@@ -43,10 +43,9 @@
       flex-basis: 40%;
       background: tomato;
       border-radius: 4px 0 0 4px;
-      i.fa { 
+      i.icon { 
         font-size: 3.5em;
         color: #FFF;
-        padding: 5px;
         text-shadow: 1px 1px 0px #232323;
       }
       &.green { background: #9CCC65 }

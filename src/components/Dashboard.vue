@@ -8,6 +8,7 @@
         .column
           .ui.raised.card
             .content.head
+              i.right.floated.large.eye.icon
               .header Zookeepers
               .meta
                 .category Active Nodes
@@ -17,6 +18,7 @@
         .column
           .ui.raised.card
             .content.head
+              i.right.floated.large.handshake.icon
               .header Kafka Brokers
               .meta
                 .category Active Nodes
@@ -26,6 +28,7 @@
         .column
           .ui.raised.card
             .content.head
+              i.right.floated.large.users.icon
               .header Consumers
               .meta
                 .category Registered Groups
@@ -58,10 +61,10 @@
         const consumerCount = this.$store.state.consumers.length;
 
         return [
-          { icon: 'fa fa-eye', color: 'red', title: 'Zookeepers', count: zookeeperCount },
-          { icon: 'fa fa-handshake-o', color: 'blue', title: 'Brokers', count: brokerCount },
-          { icon: 'fa fa-list', color: 'yellow', title: 'Topics', count: topicCount },
-          { icon: 'fa fa-users', color: 'green', title: 'Consumers', count: consumerCount }
+          { icon: 'huge eye icon', color: 'red', title: 'Zookeepers', count: zookeeperCount },
+          { icon: 'huge handshake icon', color: 'blue', title: 'Brokers', count: brokerCount },
+          { icon: 'huge list icon', color: 'yellow', title: 'Topics', count: topicCount },
+          { icon: 'huge users icon', color: 'green', title: 'Consumers', count: consumerCount }
         ];
       }
     },
@@ -74,6 +77,7 @@
     .ui.basic.segment {
       min-height: 100vh;
     }
+    .large.icon { color: #5F5F5F }
     #services.grid {
       margin-top: 2.2em;
       &>.column {
@@ -87,7 +91,13 @@
       .card {
         width: 95%;
         height: 30em;
-        .ui.list {
+        .breadcrumb {
+          text-overflow: ellipsis;
+          word-break: break-all;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .ui.list, .metrics {
           height: 23em;
           overflow: auto;
         }
@@ -102,7 +112,7 @@
       flex-wrap: wrap;
       margin: 2.2em 0;
       height: 8em;
-      color: #767676;
+      color: #474747;
       font-size: 2em;
       i { margin-right: 0.5em }
       @media(max-width: 425px) {

@@ -2,7 +2,9 @@ import Vue from 'vue';
 import debounce from 'debounce';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import VueApollo from 'vue-apollo';
+import 'jquery-tablesort';
 import 'font-awesome/css/font-awesome.css';
+import 'animate.css/animate.min.css';
 import '../semantic/dist/semantic.min.css';
 import '../semantic/dist/semantic.min';
 

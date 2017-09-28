@@ -26,9 +26,11 @@
     "metrics"
   ],
   "dependencies": {
+    "animate.css": "^3.5.2",
     "apollo-client": "^1.9.2",
     "font-awesome": "^4.7.0",
     "graphql-tag": "^2.4.2",
+    "jquery-tablesort": "^0.0.11",
     "vue": "^2.3.3",
     "vue-apollo": "^2.1.0-rc.5",
     "vue-router": "^2.6.0",

@@ -4,7 +4,7 @@
     .pusher
       router-view(v-if="cluster")
       .no.cluster(v-else)
-        i.fa.fa-sitemap
+        i.large.sitemap.icon
         |  Select a Cluster
       topicExplorer(v-if="topic")
 </template>
@@ -42,7 +42,17 @@
     align-items: center;
     height: 100vh;
     font-size: 2.5em;
-    i { margin-right: 0.5em }
+    i { 
+      margin-right: 0.5em;
+      font-size: 1em;
+    }
+  }
+  .centered-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
   }
   .ui.visible.sidebar ~ .pusher {
     width: calc(100% - 260px);
