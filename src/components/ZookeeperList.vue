@@ -1,6 +1,6 @@
 <template lang="pug">
   #zookeepers
-    transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap")
+    transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap" appear)
       .list(key="list" v-if="!this.inspecting")
         .ui.middle.aligned.selection.list
           .item(
@@ -27,7 +27,7 @@
           h4.breadcrumb
             i.link.arrow.left.icon(@click="inspect(null)")
             | {{ this.inspecting }}
-          h3(v-if="!zookeeper.metrics")
+          h3.no-metrics(v-if="!zookeeper.metrics")
             | No Metrics
           table.ui.very.basic.sortable.compact.stackable.celled.table(v-else)
             thead
@@ -117,11 +117,6 @@
 
 <style lang="scss" scoped>
   #zookeepers {
-    h4 { color: #000 }
-    h3 {
-      text-align: center;
-      margin-top: 2em;
-    }
     .fa-stack {
       float: right;
       i { color: #FFC107 }

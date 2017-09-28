@@ -101,6 +101,10 @@
           height: 23em;
           overflow: auto;
         }
+        .no-metrics {
+          text-align: center;
+          margin-top: 2em;
+        }
       }
       .content.head { flex-grow: 0 }
     }
