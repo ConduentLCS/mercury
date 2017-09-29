@@ -62,21 +62,8 @@ public class GraphQLController extends Controller {
                                                     .build()
                                                     .makeExecutableSchema();
 
-        DataFetcherExceptionHandler handler = (DataFetcherExceptionHandlerParameters handlerParameters) -> {
-            //
-            // do your custom handling here.  The parameters have all you need
-            Throwable exception = handlerParameters.getException();
-            SourceLocation sourceLocation = handlerParameters.getField().getSourceLocation();
-            ExecutionPath path = handlerParameters.getPath();
 
-            ExceptionWhileDataFetching error = new ExceptionWhileDataFetching(path, exception, sourceLocation);
-            handlerParameters.getExecutionContext().addError(error, path);
-            log.error(error.getMessage(), exception);
-        };
-
-        ExecutionStrategy executionStrategy = new AsyncExecutionStrategy(handler);
-
-        GraphQL build = GraphQL.newGraphQL(graphQLSchema).queryExecutionStrategy(executionStrategy).build();
+        GraphQL build = GraphQL.newGraphQL(graphQLSchema).build();
         ExecutionResult executionResult = build.execute(query);
 
         return  ok(Json.toJson(executionResult.toSpecification()));

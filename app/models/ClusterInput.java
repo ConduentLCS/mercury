@@ -14,7 +14,7 @@ public class ClusterInput {
     /**
      * Kafka broker list separated by comma
      */
-    private String kafkaBroker;
+    private String bootstrapServers;
 
     /**
      * ClusterInput Constructor
@@ -28,12 +28,12 @@ public class ClusterInput {
      *
      * @param datacenter
      * @param alias
-     * @param kafkaBroker
+     * @param bootstrapServers
      */
-    public ClusterInput(String datacenter, String alias, String kafkaBroker) {
+    public ClusterInput(String datacenter, String alias, String bootstrapServers) {
         this.datacenter = datacenter;
         this.alias = alias;
-        this.kafkaBroker = kafkaBroker;
+        this.bootstrapServers = bootstrapServers;
     }
 
     /**
@@ -62,8 +62,8 @@ public class ClusterInput {
      * @return broker list the cluster belongs to
      * @see String
      */
-    public  String getBrokerList(){
-        return kafkaBroker;
+    public  String getBootstrapServers(){
+        return bootstrapServers;
     }
 
     public void setDatacenter(String datacenter) {
@@ -74,8 +74,8 @@ public class ClusterInput {
         this.alias = alias;
     }
 
-    public void setKafkaBroker(String kafkaBroker) {
-        this.kafkaBroker = kafkaBroker;
+    public void setBootstrapServers(String bootstrapServers) {
+        this.bootstrapServers = bootstrapServers;
     }
 
 }

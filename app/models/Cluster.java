@@ -16,7 +16,7 @@ public class Cluster {
     /**
      * Kafka broker list separated by comma
      */
-    private final String kafkaBroker;
+    private final String bootstrapServers;
 
     /**
      * List of topics belong to the cluster
@@ -24,16 +24,22 @@ public class Cluster {
     private List<Topic> topicList;
 
     /**
+     * List of kafka brokers to the cluster
+     */
+    private List<KafkaBroker> kafkaBrokers;
+
+
+    /**
      * Cluster Constructor
      *
      * @param datacenter
      * @param alias
-     * @param kafkaBroker
+     * @param bootstrapServers
      */
-    public Cluster(String datacenter, String alias, String kafkaBroker) {
+    public Cluster(String datacenter, String alias, String bootstrapServers) {
         this.datacenter = datacenter;
         this.alias = alias;
-        this.kafkaBroker = kafkaBroker;
+        this.bootstrapServers = bootstrapServers;
     }
 
     /**
@@ -62,8 +68,8 @@ public class Cluster {
      * @return broker list the cluster belongs to
      * @see String
      */
-    public  String getBrokerList(){
-        return kafkaBroker;
+    public String getBootstrapServers() {
+        return bootstrapServers;
     }
 
     /**
@@ -79,8 +85,17 @@ public class Cluster {
     /**
      * Sets the topicList of a cluster
      *
+     * @param topicList
      */
     public void setTopicList(List<Topic> topicList) {
         this.topicList = topicList;
+    }
+
+    public List<KafkaBroker> getKafkaBrokers() {
+        return kafkaBrokers;
+    }
+
+    public void setKafkaBrokers(List<KafkaBroker> kafkaBrokers) {
+        this.kafkaBrokers = kafkaBrokers;
     }
 }
