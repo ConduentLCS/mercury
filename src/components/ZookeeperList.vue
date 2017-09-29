@@ -25,7 +25,7 @@
           )
         template(v-else)
           h4.breadcrumb
-            i.link.arrow.left.icon(@click="inspect(null)")
+            i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
             | {{ this.inspecting }}
           h3.no-metrics(v-if="!zookeeper.metrics")
             | No Metrics
