@@ -1,64 +1,60 @@
+# mercury
+
+> A tool for monitoring the Confluent platform.
 
 ## Table of contents
+---
+- [Front-End Development](#front-end-development)
+  - [Scripts](#scripts)
+- [Back-End Development](#back-end-development)
+  - [Running Kafka Cluster locally using Docker](#running-kafka-cluster-using-docker)
+  - [Clean up containers](#clean-up-containers)
+  - [Starting the server](#starting-the-server)
 
-- [Running Kafka Cluster locally using Docker](#running-kafka-cluster-locally-using-docker)
-- [Server development environment setup ](server_development_environment_setup)
+## Back-End Development
 
+### Running Kafka Cluster using Docker
 
-## Running Kafka Cluster locally using Docker
-
-Run the start_kafka.sh script to start docker instance 
-
-##### Starting a kafka cluster single node zookeeper & kafka
-
+Run the `start_kafka.sh` script to start docker instance
 ```bash
-./start_kafka.sh 
-```
-
-##### Starting a kafka cluster with 3 node zookeeper & Kafka
-
-```bash
+# Starting a Kafka Cluster | Single Node Zookeeper & Kafka
+./start_kafka.sh
+# Starting a Kafka Cluster | Multi Node Zookeeper & Kafka
 ./start_kafka.sh cluster
 ```
 
-##### Cleaning the docker containers
-
+### Clean up containers
 ```bash
 ./clean_docker.sh
 ```
 
-## Server development environment setup
+## Starting the server
 
-#####1. Prerequisites
+### 1. Prerequisites
+Play requires Java 1.8. To check that you have the latest JDK, please run:
+```bash
+java -version
+``` 
+
+### 2. Install SBT
+Refer this [page](http://www.scala-sbt.org/download.html) for scala build tool (SBT) installation
    
-   Play requires Java 1.8. To check that you have the latest JDK, please run:
-   ```bash
-   java -version
-   ``` 
-
-#####2. Install SBT
-
-   Refer this [page](http://www.scala-sbt.org/download.html) for scala build tool(SBT) installation
+### 3. Clone the repo
+```bash
+git clone git@gitlab.amicillc.com:mercury/mercury.git
+```
    
-#####3. Clone the repo
-   ```bash
-   git clone git@gitlab.amicillc.com:mercury/mercury.git
-   ```
-   
-#####4. Run sbt run
-    To start the development server run the below command
-    ```bash
-    cd mercury 
- 
-    ./sbt run
-    ```
+### 4. Run `sbt run`
+To start the development server run the below command
+```bash
+cd mercury 
 
-=======
-# mercury
+./sbt run
+```
 
-> A tool for analyzing the Confluent platform.
+## Front-End Development
 
-## Build Setup
+### Scripts
 
 ``` bash
 # install dependencies
