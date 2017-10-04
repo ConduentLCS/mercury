@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import debounce from 'debounce';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import VueApollo from 'vue-apollo';
 import 'jquery-tablesort';
@@ -11,10 +12,17 @@ import '../semantic/dist/semantic.min';
 import App from './App';
 import store from './store';
 
+const networkInterface = createNetworkInterface({ uri: 'http://localhost:4000/graphql' });
+
+const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { reconnect: true });
+
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+  networkInterface,
+  wsClient
+);
+
 const apolloClient = new ApolloClient({
-  networkInterface: createNetworkInterface({
-    uri: 'http://localhost:4000/graphql'
-  })
+  networkInterface: networkInterfaceWithSubscriptions
 });
 
 Vue.use(VueApollo);

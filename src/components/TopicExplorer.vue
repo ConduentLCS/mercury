@@ -8,17 +8,18 @@
         .options
           i.pause.link.tail.icon(
             v-if="isTailing"
-            @click="toggleTail"
+            @click="toggleTailing"
             title="Pause Feed"
           )
           i.play.link.tail.icon(
             v-else
-            @click="toggleTail"
+            @click="toggleTailing"
             title="Resume Feed"
           )
           .ui.icon.input
-            input(type="text" placeholder="Filter..." v-model="filter")
-            i.filter.icon
+            input(type="text" placeholder="Filter..." @input="applyFilter" v-model.trim="filterInput")
+            i.filter.icon(v-if="!filterInput.length")
+            i.link.close.icon(v-else @click="clearFilter")
           .ui.mini.yellow.circular.icon.button(
             title="Minimize"
             @click="minimize"
@@ -35,7 +36,7 @@
             v-for="message in messages"
             @click="inspect(message)"
           )
-            | {{ message.data | limit }}
+            .text(v-html="highlight(message.data)")
             .meta
               .offset
                 | Offset: {{ message.offset }} |
@@ -58,21 +59,59 @@
 <script>
   import moment from 'moment';
   import jsonMarkup from 'json-markup';
+  import gql from 'graphql-tag';
 
   export default {
+    apollo: {
+      $subscribe: {
+        messages: {
+          query: gql` subscription Messages($topic: String!) {
+            newMessage(topic: $topic) {
+              offset
+              partition
+              timestamp
+              data
+            }
+          }`,
+          variables() {
+            return {
+              topic: this.$store.state.topic.name
+            };
+          },
+          skip() {
+            return !this.$store.state.topic || !this.isTailing;
+          },
+          result(data) {
+            const message = data.newMessage;
+            const { data: contents = '' } = message;
+            const filter = new RegExp(this.filter, 'g');
+
+            // Skip adding message to buffer if filter misses
+            if (this.hasFilter && contents.search(filter) < 0) {
+              return;
+            }
+
+            if (this.messages.length >= 30) {
+              this.messages.shift();
+            }
+
+            this.messages.push(message);
+          }
+        }
+      }
+    },
     data() {
       return {
         filter: '',
+        filterInput: '',
         message: null,
+        messages: [],
         showViewer: false,
-        isMaximized: false,
-        isTailing: true
+        isTailing: true,
+        isMaximized: false
       };
     },
     computed: {
-      messages() {
-        return this.$store.state.messages;
-      },
       pretty() {
         if (!this.message) return '';
         try {
@@ -83,6 +122,9 @@
       },
       topic() {
         return this.$store.state.topic;
+      },
+      hasFilter() {
+        return this.filter.length > 0;
       }
     },
     methods: {
@@ -99,18 +141,42 @@
       closeViewer() {
         this.showViewer = false;
       },
-      toggleTail() {
+      toggleTailing() {
         this.isTailing = !this.isTailing;
-      }
-    },
-    filters: {
-      limit: (data = '') => {
-        if (data.length > 230) {
-          return `${data.substring(0, 230)} ...`;
+      },
+      clearMessages() {
+        this.messages = [];
+      },
+      clearFilter() {
+        this.filterInput = '';
+        this.filter = '';
+      },
+      highlight(message = '') {
+        const truncate = condition => (condition ? '...' : '');
+
+        if (this.hasFilter) {
+          const filter = new RegExp(this.filter, 'g');
+          let hitIndex = message.search(filter) - 30;
+
+          if (hitIndex < 0) hitIndex = 0;
+
+          message = message.substring(hitIndex, hitIndex + 230)
+            .replace(filter, '<span class="highlight">$&</span>');
+
+          return `${message} ${truncate(hitIndex + 230 < message.length)}`;
         }
 
-        return data;
+        return `${message.substring(0, 230)} ${truncate(message.length > 230)}`;
       },
+      applyFilter: _.debounce(function filter() {
+        if (!this.filter.includes(this.filterInput)) {
+          this.clearMessages();
+        }
+
+        this.filter = this.filterInput;
+      }, 350)
+    },
+    filters: {
       date: (date) => {
         const parsed = moment(date);
         if (parsed.isValid()) {
@@ -122,6 +188,12 @@
       ucfirst: str => (
         str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
       )
+    },
+    mounted() {
+      this.$store.watch(state => state.topic, () => {
+        this.clearMessages();
+        this.clearFilter();
+      });
     }
   };
 </script>
@@ -255,6 +327,10 @@
         }
         &:last-child { 
           border: none;
+        }
+        .highlight {
+          background: #9CCC65;
+          color: #000;
         }
       }
     }
