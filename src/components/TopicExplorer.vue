@@ -4,7 +4,7 @@
       .toolbar
         .details
           | Topic: #[b {{ this.topic.name | ucfirst }}] -
-          | Offset: #[b {{ this.topic.offset.toLocaleString() }}]
+          | Offset: #[b {{ this.currentOffset }}]
         .options
           i.pause.link.tail.icon(
             v-if="isTailing"
@@ -95,6 +95,7 @@
               this.messages.shift();
             }
 
+            this.setOffset(message.offset);
             this.messages.push(message);
           }
         }
@@ -104,6 +105,7 @@
       return {
         filter: '',
         filterInput: '',
+        offset: 0,
         message: null,
         messages: [],
         showViewer: false,
@@ -122,6 +124,9 @@
       },
       topic() {
         return this.$store.state.topic;
+      },
+      currentOffset() {
+        return this.offset ? this.offset.toLocaleString() : 'N/A';
       },
       hasFilter() {
         return this.filter.length > 0;
@@ -143,6 +148,9 @@
       },
       toggleTailing() {
         this.isTailing = !this.isTailing;
+      },
+      setOffset(offset) {
+        this.offset = isNaN(Number(offset)) ? 0 : Number(offset);
       },
       clearMessages() {
         this.messages = [];
@@ -193,6 +201,7 @@
       this.$store.watch(state => state.topic, () => {
         this.clearMessages();
         this.clearFilter();
+        this.setOffset(0);
       });
     }
   };
