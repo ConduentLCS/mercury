@@ -5,11 +5,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 test/unit/coverage
-semantic
 
 # VSCode
 .editorconfig
 .vscode
+
+logs
+target
+project/project
+project/target
+/.g8
 
 # Editor directories and files
 .idea
@@ -17,20 +22,20 @@ semantic
 *.ntvs*
 *.njsproj
 *.sln
-
-logs
-target
-project/project
-project/target
-/.g8
 /.idea
 /.idea_modules
 /.classpath
 /.project
 /.settings
+
 /RUNNING_PID
 .history
 target
 tmp
 dist
 .cache
+/.vscode
+
+# semantic UI
+semantic
+

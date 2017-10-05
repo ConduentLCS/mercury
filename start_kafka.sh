@@ -33,4 +33,9 @@ sudo docker-compose ps
 sudo docker ps -a
 
 
+docker run \
+  --net=host \
+  --rm confluentinc/cp-kafka:3.3.0 \
+  kafka-topics --create --topic test --partitions 1 --replication-factor 1 --if-not-exists --zookeeper localhost:32181
+
 

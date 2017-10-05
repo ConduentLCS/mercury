@@ -1,10 +1,15 @@
 package controllers;
 
 import com.coxautodev.graphql.tools.SchemaParser;
+import graphql.ExceptionWhileDataFetching;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.execution.*;
+import graphql.language.SourceLocation;
 import graphql.schema.GraphQLSchema;
 import models.ClusterRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -15,7 +20,7 @@ import services.Query;
  * to the application's graphql requests
  */
 public class GraphQLController extends Controller {
-
+    private static final Logger log = LoggerFactory.getLogger(GraphQLController.class);
     /**
      * An action that renders an HTML page with a graphiql plugins.
      * The configuration in the <code>routes</code> file means that
@@ -56,6 +61,7 @@ public class GraphQLController extends Controller {
                                                     .resolvers(new Query(clusterRepository))
                                                     .build()
                                                     .makeExecutableSchema();
+
 
         GraphQL build = GraphQL.newGraphQL(graphQLSchema).build();
         ExecutionResult executionResult = build.execute(query);
