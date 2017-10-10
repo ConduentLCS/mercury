@@ -16,10 +16,10 @@ eval $(docker-machine env confluent)
 
 if [[ "$1" ==  "cluster" ]];
  then
-    cd docker/cluster
+    cd ../docker/cluster
 else
     echo "change directory to single node"
-    cd docker/single-node
+    cd ../docker/single-node
 fi
 
 echo `pwd`
