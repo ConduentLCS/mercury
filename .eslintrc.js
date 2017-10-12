@@ -15,7 +15,8 @@ module.exports = {
     'html'
   ],
   globals: {
-    '$': true
+    '$': true,
+    '_': true
   },
   // check if imports actually resolve
   'settings': {
