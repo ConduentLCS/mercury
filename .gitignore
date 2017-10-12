@@ -10,12 +10,6 @@ test/unit/coverage
 .editorconfig
 .vscode
 
-logs
-target
-project/project
-project/target
-/.g8
-
 # Editor directories and files
 .idea
 *.suo
@@ -28,14 +22,9 @@ project/target
 /.project
 /.settings
 
-/RUNNING_PID
-.history
-target
-tmp
-dist
-.cache
-/.vscode
+# GraphQL
+schema.json
 
-# semantic UI
+# Semantic UI
 semantic
 

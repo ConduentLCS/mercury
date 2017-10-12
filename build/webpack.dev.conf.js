@@ -1,6 +1,6 @@
 var utils = require('./utils')
 var webpack = require('webpack')
-var config = require('../config')
+var environment = require('../config/environment')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -13,7 +13,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 module.exports = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: utils.styleLoaders({ sourceMap: environment.dev.cssSourceMap })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
@@ -25,7 +25,7 @@ module.exports = merge(baseWebpackConfig, {
       jQuery: 'jquery'
     }),
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      'process.env': environment.dev.env
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),

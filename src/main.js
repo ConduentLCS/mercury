@@ -10,7 +10,6 @@ import '../semantic/dist/semantic.min';
 
 import App from './App';
 import store from './store';
-import router from './router';
 
 const apolloClient = new ApolloClient({
   networkInterface: createNetworkInterface({
@@ -27,7 +26,6 @@ const apolloProvider = new VueApollo({
   }
 });
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   template: '<App/>',
@@ -53,7 +51,6 @@ new Vue({
       }
     }, 250));
   },
-  router,
   store,
   apolloProvider
 });

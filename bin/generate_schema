@@ -1,0 +1,19 @@
+#! /usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const { graphql } = require('graphql');
+const { introspectionQuery, printSchema } = require('graphql');
+const schema = require('../schema');
+
+graphql(schema, introspectionQuery).then(result => fs.writeFileSync(
+  path.join(__dirname, '../schema/schema.json'),
+  JSON.stringify(result, null, 2)
+));
+
+fs.writeFileSync(
+  path.join(__dirname, '../schema/schema.graphql'),
+  printSchema(schema)
+);
+
+process.exit(0);

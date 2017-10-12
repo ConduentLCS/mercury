@@ -1,9 +1,11 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
+const path = require('path');
 
 module.exports = {
   build: {
-    env: require('./prod.env'),
+    env: {
+      NODE_ENV: '"production"'
+    },
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -22,7 +24,9 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
-    env: require('./dev.env'),
+    env: {
+      NODE_ENV: '"development"'
+    },
     port: 8080,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
@@ -35,4 +39,4 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   }
-}
+};

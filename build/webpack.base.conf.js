@@ -1,6 +1,6 @@
 var path = require('path')
 var utils = require('./utils')
-var config = require('../config')
+var environment = require('../config/environment')
 var vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve (dir) {
@@ -12,11 +12,11 @@ module.exports = {
     'mercury-app': './src/main.js'
   },
   output: {
-    path: config.build.assetsRoot,
+    path: environment.build.assetsRoot,
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+      ? environment.build.assetsPublicPath
+      : environment.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -72,4 +72,4 @@ module.exports = {
       }
     ]
   }
-}
+};

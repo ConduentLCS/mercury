@@ -2,7 +2,7 @@
   #app.pushable
     sidebar
     .pusher
-      router-view(v-if="cluster")
+      dashboard(v-if="cluster")
       .no.cluster(v-else)
         i.large.sitemap.icon
         |  Select a Cluster
@@ -12,6 +12,7 @@
 <script>
   import Sidebar from '@/components/Sidebar';
   import TopicExplorer from '@/components/TopicExplorer';
+  import Dashboard from '@/components/Dashboard';
 
   export default {
     computed: {
@@ -22,7 +23,7 @@
         return this.$store.state.topic;
       }
     },
-    components: { Sidebar, TopicExplorer }
+    components: { Sidebar, TopicExplorer, Dashboard }
   };
 </script>
 
