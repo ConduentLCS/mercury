@@ -6,20 +6,19 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
+const { PubSub, withFilter } = require('graphql-subscriptions');
+const Kafka = require('kafka-node');
+const config = require('config');
+
 const ClusterType = require('./types/ClusterType');
 const MessageType = require('./types/MessageType');
 
-const {
-  addLatency,
-  db
-} = require('./utils');
-
-const { PubSub, withFilter } = require('graphql-subscriptions');
-const Kafka = require('kafka-node');
-
 const pubsub = new PubSub();
 
-// BEGIN MOCK MESSAGES
+// Open Cluster Sockets
+const clusterSockets = {};
+
+// BEGIN MOCK MESSAGES ( TODO Remove )
 let counter = 0;
 const faker = require('faker');
 
@@ -51,8 +50,6 @@ setInterval(() => {
 
 // END MOCK MESSAGES
 
-const kafkaSockets = {};
-
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: {
@@ -62,16 +59,16 @@ const QueryType = new GraphQLObjectType({
         address: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: (context, args) => {
-        if (!kafkaSockets[args.address]) {
-          kafkaSockets[args.address] = new Kafka.Client(args.address);
+        if (!clusterSockets[args.address]) {
+          clusterSockets[args.address] = new Kafka.Client(args.address);
         }
 
-        return kafkaSockets[args.address];
+        return clusterSockets[args.address];
       }
     },
     clusters: {
       type: new GraphQLList(ClusterType),
-      resolve: () => addLatency(db.clusters, 1500)
+      resolve: () => config.get('clusters')
     }
   }
 });

@@ -21,7 +21,7 @@ const ClusterType = new GraphQLObjectType({
   name: 'Cluster',
   fields: {
     datacenter: { type: GraphQLString, description: 'Datacenter identifier' },
-    address: { type: GraphQLString, description: 'Connection address for the given cluster' },
+    zookeeperString: { type: GraphQLString, description: 'Zookeeper connection string for a cluster' },
     alias: { type: GraphQLString, description: 'Alias or helping text for cluster identification' },
     topics: {
       type: new GraphQLList(TopicType),

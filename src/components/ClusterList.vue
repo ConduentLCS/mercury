@@ -24,7 +24,7 @@
       clusters: gql` query Clusters {
         clusters {
           datacenter
-          address
+          zookeeperString
           alias
         }
       }`
@@ -35,10 +35,10 @@
     computed: {
       grouped() {
         if (!this.clusters) return {};
-        return this.clusters.reduce((reduced, { datacenter, address, alias }) => {
+        return this.clusters.reduce((reduced, { datacenter, zookeeperString, alias }) => {
           if (!datacenter) datacenter = 'Other';
           if (!reduced[datacenter]) reduced[datacenter] = {};
-          reduced[datacenter][alias] = address;
+          reduced[datacenter][alias] = zookeeperString;
           return reduced;
         }, {});
       },

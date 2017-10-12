@@ -17,20 +17,6 @@ const topics = [
   { name: 'tags', offset: 6234, partitions: 3 }
 ];
 
-
-const zkMetrics = [
-  { metric: 'Average Latency', value: 5 },
-  { metric: 'Outstanding Requests', value: 3 },
-  { metric: 'Received', value: 852 },
-  { metric: 'Sent', value: 906 },
-  { metric: 'File Descriptors', value: 2 },
-  { metric: 'Mode', value: 'leader' },
-  { metric: 'Pending Syncs', value: 3 },
-  { metric: 'Followers', value: 8 },
-  { metric: 'Heap Memory', value: '125M' },
-  { metric: 'Version', value: '3.4.0' }
-];
-
 const kfMetrics = [
   { metric: 'UnderReplicatedPartitions', value: 1 },
   { metric: 'OfflinePartitionsCount', value: 2 },
@@ -59,21 +45,7 @@ const addLatency = (result, timeout = 0) => (
 const getTopics = (start, end) => topics.slice(start, end);
 
 const db = {
-  clusters: [
-    { datacenter: 'ALB', address: 'roc-dvzoo01.amicillc.com:2181,roc-dvzoo02.amicillc.com:2181,roc-dvzoo03.amicillc.com:2181', alias: 'Development' }
-  ],
   topics,
-  zookeepers: [
-    { hostname: 'zk-host01.amicillc.com', latency: 4, isLeader: true, metrics: zkMetrics },
-    { hostname: 'zk-host02.amicillc.com', latency: 0, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host03.amicillc.com', latency: 1, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host04.amicillc.com', latency: 4, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host05.amicillc.com', latency: 0, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host06.amicillc.com', latency: 1, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host07.amicillc.com', latency: 4, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host08.amicillc.com', latency: 0, isLeader: false, metrics: zkMetrics },
-    { hostname: 'zk-host09.amicillc.com', latency: 1, isLeader: false, metrics: zkMetrics }
-  ],
   brokers: [
     { hostname: 'kf-broker01.amicillc.com', bytesUp: 324, bytesDown: 482, metrics: kfMetrics },
     { hostname: 'kf-broker02.amicillc.com', bytesUp: 723, bytesDown: 623, metrics: kfMetrics },

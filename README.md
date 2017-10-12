@@ -10,9 +10,10 @@
   - [Running Kafka Cluster locally using Docker](#running-kafka-cluster-using-docker)
   - [Clean up containers](#clean-up-containers)
   - [Starting the server](#starting-the-server)
+- [GraphQL Schema](#graphql-schema)
 
 ## Back-End Development
-
+---
 ### Running Kafka Cluster using Docker
 
 Run the `start_kafka.sh` script to start docker instance
@@ -53,7 +54,7 @@ yarn run dev
 ```
 
 ## Front-End Development
-
+---
 ### Scripts
 
 ``` bash
@@ -68,4 +69,79 @@ yarn run unit
 
 # run all tests
 yarn test
+```
+
+## GraphQL Schema
+---
+```graphql
+type Cluster {
+  # Datacenter identifier
+  datacenter: String
+
+  # Zookeeper connection string for a cluster
+  zookeeperString: String
+
+  # Alias or helping text for cluster identification
+  alias: String
+
+  # Collection of topics from the cluster
+  topics: [Topic]
+
+  # Zookeeper nodes from a cluster
+  zookeepers: [Zookeeper]
+  zookeeper(hostname: String!): Zookeeper
+
+  # Kafka Brokers that are active in a given cluster
+  kafkaBrokers: [KafkaBroker]
+  kafkaBroker(hostname: String!): KafkaBroker
+
+  # Consumer groups registed in a given cluster
+  consumers: [Consumer]
+  consumer(group: String!): Consumer
+}
+
+type Consumer {
+  group: String
+  topicCount: Int
+  topics: [Topic]
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+type KafkaBroker {
+  hostname: String
+  bytesUp: Int
+  bytesDown: Int
+  metrics: JSON
+}
+
+type Message {
+  offset: String
+  partition: Int
+  timestamp: String
+  data: String
+}
+
+type Query {
+  cluster(address: String!): Cluster
+  clusters: [Cluster]
+}
+
+type Subscription {
+  newMessage(topic: String!): Message
+}
+
+type Topic {
+  name: String
+  offset: Int
+  partitions: Int
+}
+
+type Zookeeper {
+  hostname: String
+  metrics: JSON
+  latency: Int
+  isLeader: Boolean
+}
 ```

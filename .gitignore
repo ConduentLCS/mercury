@@ -6,6 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 test/unit/coverage
 
+# Configurations
+config/*
+!sample.json
+
 # VSCode
 .editorconfig
 .vscode
@@ -24,6 +28,7 @@ test/unit/coverage
 
 # GraphQL
 schema.json
+schema.graphql
 
 # Semantic UI
 semantic
