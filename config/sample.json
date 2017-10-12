@@ -1,0 +1,19 @@
+{
+  "clusters": [
+    { 
+      "datacenter": "NY",
+      "zookeeperString": "ny-dev-zookeeper01.example.com:2181;ny-dev-zookeeper02.example.com:2181",
+      "alias": "Development"
+    },
+    {
+      "datacenter": "NY",
+      "zookeeperString": "ny-qa-zookeeper01.example.com:2181;ny-qa-zookeeper02.example.com:2181",
+      "alias": "QA"
+    },
+    {
+      "datacenter": "NY",
+      "zookeeperString": "ny-prod-zookeeper01.example.com:2181;ny-prod-zookeeper02.example.com:2181",
+      "alias": "Production"
+    }
+  ]
+}

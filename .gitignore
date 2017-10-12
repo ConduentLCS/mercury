@@ -6,15 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 test/unit/coverage
 
+# Configurations
+config/*
+!sample.json
+
 # VSCode
 .editorconfig
 .vscode
-
-logs
-target
-project/project
-project/target
-/.g8
 
 # Editor directories and files
 .idea
@@ -28,14 +26,10 @@ project/target
 /.project
 /.settings
 
-/RUNNING_PID
-.history
-target
-tmp
-dist
-.cache
-/.vscode
+# GraphQL
+schema.json
+schema.graphql
 
-# semantic UI
+# Semantic UI
 semantic
 

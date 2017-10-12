@@ -10,9 +10,10 @@
   - [Running Kafka Cluster locally using Docker](#running-kafka-cluster-using-docker)
   - [Clean up containers](#clean-up-containers)
   - [Starting the server](#starting-the-server)
+- [GraphQL Schema](#graphql-schema)
 
 ## Back-End Development
-
+---
 ### Running Kafka Cluster using Docker
 
 Run the `start_kafka.sh` script to start docker instance
@@ -31,49 +32,116 @@ Run the `start_kafka.sh` script to start docker instance
 ## Starting the server
 
 ### 1. Prerequisites
-Play requires Java 1.8. To check that you have the latest JDK, please run:
-```bash
-java -version
-``` 
+To obtain the required packages for Mercury, you will need to install [Yarn](https://yarnpkg.com/)
 
-### 2. Install SBT
-Refer this [page](http://www.scala-sbt.org/download.html) for scala build tool (SBT) installation
-   
-### 3. Clone the repo
+### 2. Clone the repo
 ```bash
 git clone git@gitlab.amicillc.com:mercury/mercury.git
 ```
+
+### 3. Install Modules
+Using the [Yarn](https://yarnpkg.com/) package manager, fetch the required modules.
+```bash
+# Install dependencies
+yarn install
+```
    
-### 4. Run `sbt run`
+### 4. Start the application
 To start the development server run the below command
 ```bash
-cd mercury 
-
-./sbt run
+# Start the development server
+yarn run dev
 ```
 
 ## Front-End Development
-
+---
 ### Scripts
 
 ``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
 # build for production with minification
-npm run build
+yarn run build
 
 # build for production and view the bundle analyzer report
-npm run build --report
+yarn run build --report
 
 # run unit tests
-npm run unit
+yarn run unit
 
 # run all tests
-npm test
+yarn test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## GraphQL Schema
+---
+```graphql
+type Cluster {
+  # Datacenter identifier
+  datacenter: String
+
+  # Zookeeper connection string for a cluster
+  zookeeperString: String
+
+  # Alias or helping text for cluster identification
+  alias: String
+
+  # Collection of topics from the cluster
+  topics: [Topic]
+
+  # Zookeeper nodes from a cluster
+  zookeepers: [Zookeeper]
+  zookeeper(hostname: String!): Zookeeper
+
+  # Kafka Brokers that are active in a given cluster
+  kafkaBrokers: [KafkaBroker]
+  kafkaBroker(hostname: String!): KafkaBroker
+
+  # Consumer groups registed in a given cluster
+  consumers: [Consumer]
+  consumer(group: String!): Consumer
+}
+
+type Consumer {
+  group: String
+  topicCount: Int
+  topics: [Topic]
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+type KafkaBroker {
+  hostname: String
+  bytesUp: Int
+  bytesDown: Int
+  metrics: JSON
+}
+
+type Message {
+  offset: String
+  partition: Int
+  timestamp: String
+  data: String
+}
+
+type Query {
+  cluster(address: String!): Cluster
+  clusters: [Cluster]
+}
+
+type Subscription {
+  newMessage(topic: String!): Message
+}
+
+type Topic {
+  name: String
+  offset: Int
+  partitions: Int
+}
+
+type Zookeeper {
+  hostname: String
+  metrics: JSON
+  latency: Int
+  isLeader: Boolean
+}
+```

@@ -40,6 +40,7 @@ module.exports = {
     // allow debugger during development
     'no-console': 'warn',
     'no-param-reassign': 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-new': 'off'
   }
 }
