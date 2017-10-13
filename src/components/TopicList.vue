@@ -22,7 +22,7 @@
             .header
               | {{ topic.name }}
               i.check.icon(v-if="active(topic.name)")
-            .description Offset: #[b {{ topic.offset }}] / Partitions: #[b {{ topic.partitions }}]
+            .description Partitions: #[b {{ topic.partitions }}]
 </template>
 
 <script>
@@ -37,7 +37,6 @@
           cluster(address: $address) {
             topics {
               name
-              offset
               partitions
             }
           }
@@ -118,6 +117,7 @@
     .ui.list {
       overflow: auto; 
       .item { margin-right: 2px }
+      .header { word-break: break-all }
     }
   }
 </style>

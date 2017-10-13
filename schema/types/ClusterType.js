@@ -1,4 +1,5 @@
 const { Socket } = require('net');
+const _ = require('lodash');
 
 const {
   GraphQLObjectType,
@@ -26,21 +27,26 @@ const ClusterType = new GraphQLObjectType({
     topics: {
       type: new GraphQLList(TopicType),
       description: 'Collection of topics from the cluster',
-      resolve: () => (
-        addLatency(db.topics.sort((a, b) => {
-          const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
+      resolve: cluster => new Promise((resolve, reject) => {
+        cluster.loadMetadataForTopics([], (err, results) => {
+          if (err) return reject(err);
+          const raw = _.get(results, '1.metadata');
+          const topics = Object.keys(raw).map(topic => ({
+            name: topic,
+            partitions: Object.keys(raw[topic]).length
+          }));
 
-          // names must be equal
-          return 0;
-        }), 1500)
-      )
+          topics.sort((a ,b) => {
+            var nameA = a.name.toUpperCase();
+            var nameB = b.name.toUpperCase();
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            return 0;
+          });
+
+          resolve(topics);
+        });
+      })
     },
     zookeepers: {
       type: new GraphQLList(ZookeeperType),

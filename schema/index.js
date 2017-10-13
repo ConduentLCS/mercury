@@ -58,13 +58,16 @@ const QueryType = new GraphQLObjectType({
       args: {
         address: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (context, args) => {
-        if (!clusterSockets[args.address]) {
-          clusterSockets[args.address] = new Kafka.Client(args.address);
-        }
+      resolve: (context, args) => new Promise((resolve) => {
+        let cluster = clusterSockets[args.address];
 
-        return clusterSockets[args.address];
-      }
+        if (!cluster) {
+          cluster = new Kafka.Client(args.address);
+          cluster.on('connect', () => resolve(cluster));
+        } else {
+          resolve(cluster);
+        }
+      })
     },
     clusters: {
       type: new GraphQLList(ClusterType),
