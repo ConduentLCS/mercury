@@ -1,5 +1,4 @@
 const { Socket } = require('net');
-const _ = require('lodash');
 
 const {
   GraphQLObjectType,
@@ -27,32 +26,13 @@ const ClusterType = new GraphQLObjectType({
     topics: {
       type: new GraphQLList(TopicType),
       description: 'Collection of topics from the cluster',
-      resolve: cluster => new Promise((resolve, reject) => {
-        cluster.loadMetadataForTopics([], (err, results) => {
-          if (err) return reject(err);
-          const raw = _.get(results, '1.metadata');
-          const topics = Object.keys(raw).map(topic => ({
-            name: topic,
-            partitions: Object.keys(raw[topic]).length
-          }));
-
-          topics.sort((a ,b) => {
-            var nameA = a.name.toUpperCase();
-            var nameB = b.name.toUpperCase();
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0;
-          });
-
-          resolve(topics);
-        });
-      })
+      resolve: cluster => cluster.getTopics()
     },
     zookeepers: {
       type: new GraphQLList(ZookeeperType),
       description: 'Zookeeper nodes from a cluster',
       resolve: cluster => Promise.all(
-        cluster.zk.client.connectionManager.servers.map(zk => (
+        cluster.client.zk.client.connectionManager.servers.map(zk => (
           new Promise((res) => {
             const socket = new Socket();
             socket.connect(zk.port, zk.host, () => socket.write('mntr'));
@@ -78,7 +58,7 @@ const ClusterType = new GraphQLObjectType({
         hostname: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: (cluster, args) => {
-        const zk = cluster.zk.client.connectionManager.servers.find(node => (
+        const zk = cluster.client.zk.client.connectionManager.servers.find(node => (
           node.host === args.hostname
         ));
 

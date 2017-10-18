@@ -16,6 +16,8 @@ const schema = require('./schema');
 const environment = require('./config/environment');
 const webpackConfig = require('./build/webpack.dev.conf');
 
+const manager = require('./lib/cluster-manager');
+
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(environment.dev.env.NODE_ENV);
 }
@@ -24,7 +26,10 @@ const server = express();
 
 server.use('*', cors());
 
-server.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+server.use('/graphql', bodyParser.json(), graphqlExpress({
+  schema,
+  context: manager
+}));
 
 server.use('/graphiql', graphiqlExpress({
   endpointURL: 'graphql',
@@ -86,7 +91,8 @@ ws.listen(port, () => {
   new SubscriptionServer({
     execute,
     subscribe,
-    schema
+    schema,
+    onConnect: () => ({ manager })
   }, {
     server: ws,
     path: '/subscriptions'

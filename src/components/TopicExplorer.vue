@@ -3,7 +3,7 @@
     #topic-explorer(:class="{maximized: isMaximized}")
       .toolbar
         .details
-          | Topic: #[b {{ this.topic.name | ucfirst }}] -
+          | Topic: #[b {{ this.topic.name }}] -
           | Offset: #[b {{ this.currentOffset }}]
         .options
           i.pause.link.tail.icon(
@@ -65,8 +65,8 @@
     apollo: {
       $subscribe: {
         messages: {
-          query: gql` subscription Messages($topic: String!) {
-            newMessage(topic: $topic) {
+          query: gql` subscription Messages($topic: String!, $cluster: String!) {
+            newMessage(topic: $topic, cluster: $cluster) {
               offset
               partition
               timestamp
@@ -75,7 +75,8 @@
           }`,
           variables() {
             return {
-              topic: this.$store.state.topic.name
+              topic: this.$store.state.topic.name,
+              cluster: this.$store.state.cluster
             };
           },
           skip() {
@@ -192,10 +193,7 @@
         }
 
         return '';
-      },
-      ucfirst: str => (
-        str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-      )
+      }
     },
     mounted() {
       this.$store.watch(state => state.topic, () => {
@@ -276,6 +274,7 @@
         flex-basis: 0%;
         font-family: inherit;
         white-space: pre-wrap;
+        word-break: break-all;
         margin: 0;
         color: #FFF;
         display: flex;
