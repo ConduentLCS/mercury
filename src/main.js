@@ -12,9 +12,17 @@ import '../semantic/dist/semantic.min';
 import App from './App';
 import store from './store';
 
-const networkInterface = createNetworkInterface({ uri: 'http://localhost:4000/graphql' });
+const {
+  protocol,
+  hostname,
+  port: portFromLocation
+} = window.location;
 
-const wsClient = new SubscriptionClient('ws://localhost:4000/subscriptions', { reconnect: true });
+const port = portFromLocation ? `:${portFromLocation}` : '';
+
+const networkInterface = createNetworkInterface({ uri: `${protocol}//${hostname}${port}/graphql` });
+
+const wsClient = new SubscriptionClient(`ws://${hostname}${port}/subscriptions`, { reconnect: true });
 
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   networkInterface,
