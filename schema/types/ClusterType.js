@@ -1,5 +1,3 @@
-const { Socket } = require('net');
-
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -31,58 +29,14 @@ const ClusterType = new GraphQLObjectType({
     zookeepers: {
       type: new GraphQLList(ZookeeperType),
       description: 'Zookeeper nodes from a cluster',
-      resolve: cluster => Promise.all(
-        cluster.client.zk.client.connectionManager.servers.map(zk => (
-          new Promise((res) => {
-            const socket = new Socket();
-            socket.connect(zk.port, zk.host, () => socket.write('mntr'));
-
-            socket.on('data', (data) => {
-              let metrics = data.toString();
-              metrics = metrics.split('\n').reduce((formatted, line) => {
-                if (line === '') return formatted;
-                const [key, val] = line.split('\t');
-                formatted[key] = val;
-                return formatted;
-              }, {});
-              socket.destroy();
-              res({ hostname: zk.host, metrics });
-            });
-          })
-        ))
-      )
+      resolve: cluster => cluster.getZookeepers()
     },
     zookeeper: {
       type: ZookeeperType,
       args: {
         hostname: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (cluster, args) => {
-        const zk = cluster.client.zk.client.connectionManager.servers.find(node => (
-          node.host === args.hostname
-        ));
-
-        if (zk) {
-          return new Promise((res) => {
-            const socket = new Socket();
-            socket.connect(zk.port, zk.host, () => socket.write('mntr'));
-
-            socket.on('data', (data) => {
-              let metrics = data.toString();
-              metrics = metrics.split('\n').reduce((formatted, line) => {
-                if (line === '') return formatted;
-                const [key, val] = line.split('\t');
-                formatted[key] = val;
-                return formatted;
-              }, {});
-              socket.destroy();
-              res({ hostname: zk.host, metrics });
-            });
-          });
-        }
-
-        return null;
-      }
+      resolve: (cluster, args) => cluster.getZookeeper(args.hostname)
     },
     kafkaBrokers: {
       type: new GraphQLList(KafkaBrokerType),
