@@ -28,7 +28,7 @@ server.use('*', cors());
 
 server.use('/graphql', bodyParser.json(), graphqlExpress({
   schema,
-  context: manager
+  context: { manager }
 }));
 
 server.use('/graphiql', graphiqlExpress({

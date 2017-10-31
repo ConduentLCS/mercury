@@ -21,7 +21,11 @@ const QueryType = new GraphQLObjectType({
       args: {
         address: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (obj, args, manager) => manager.connectCluster(args.address)
+      resolve: (obj, args, context) => {
+        const cluster = context.manager.connectCluster(args.address);
+        context.cluster = cluster;
+        return cluster;
+      }
     },
     clusters: {
       type: new GraphQLList(ClusterType),
