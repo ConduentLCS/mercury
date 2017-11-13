@@ -18,7 +18,6 @@
   },
   "keywords": [
     "apache",
-    "confluent",
     "zookeeper",
     "kafka",
     "metrics"
