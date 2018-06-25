@@ -1,5 +1,3 @@
-const { Socket } = require('net');
-
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -26,77 +24,19 @@ const ClusterType = new GraphQLObjectType({
     topics: {
       type: new GraphQLList(TopicType),
       description: 'Collection of topics from the cluster',
-      resolve: () => (
-        addLatency(db.topics.sort((a, b) => {
-          const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-
-          // names must be equal
-          return 0;
-        }), 1500)
-      )
+      resolve: cluster => cluster.getTopics()
     },
     zookeepers: {
       type: new GraphQLList(ZookeeperType),
       description: 'Zookeeper nodes from a cluster',
-      resolve: cluster => Promise.all(
-        cluster.zk.client.connectionManager.servers.map(zk => (
-          new Promise((res) => {
-            const socket = new Socket();
-            socket.connect(zk.port, zk.host, () => socket.write('mntr'));
-
-            socket.on('data', (data) => {
-              let metrics = data.toString();
-              metrics = metrics.split('\n').reduce((formatted, line) => {
-                if (line === '') return formatted;
-                const [key, val] = line.split('\t');
-                formatted[key] = val;
-                return formatted;
-              }, {});
-              socket.destroy();
-              res({ hostname: zk.host, metrics });
-            });
-          })
-        ))
-      )
+      resolve: cluster => cluster.getZookeepers()
     },
     zookeeper: {
       type: ZookeeperType,
       args: {
         hostname: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (cluster, args) => {
-        const zk = cluster.zk.client.connectionManager.servers.find(node => (
-          node.host === args.hostname
-        ));
-
-        if (zk) {
-          return new Promise((res) => {
-            const socket = new Socket();
-            socket.connect(zk.port, zk.host, () => socket.write('mntr'));
-
-            socket.on('data', (data) => {
-              let metrics = data.toString();
-              metrics = metrics.split('\n').reduce((formatted, line) => {
-                if (line === '') return formatted;
-                const [key, val] = line.split('\t');
-                formatted[key] = val;
-                return formatted;
-              }, {});
-              socket.destroy();
-              res({ hostname: zk.host, metrics });
-            });
-          });
-        }
-
-        return null;
-      }
+      resolve: (cluster, args) => cluster.getZookeeper(args.hostname)
     },
     kafkaBrokers: {
       type: new GraphQLList(KafkaBrokerType),
@@ -115,16 +55,17 @@ const ClusterType = new GraphQLObjectType({
     consumers: {
       type: new GraphQLList(ConsumerType),
       description: 'Consumer groups registed in a given cluster',
-      resolve: () => db.consumers
+      resolve: cluster => cluster.getConsumers()
     },
     consumer: {
       type: ConsumerType,
       args: {
         group: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (context, args) => (
-        addLatency(db.consumers.find(consumer => consumer.group === args.group), 1500)
-      )
+      resolve: (cluster, { group }, context) => {
+        context.group = group;
+        return { group };
+      }
     }
   }
 });

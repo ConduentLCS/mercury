@@ -18,13 +18,13 @@
   },
   "keywords": [
     "apache",
-    "confluent",
     "zookeeper",
     "kafka",
     "metrics"
   ],
   "dependencies": {
     "apollo-server-express": "^1.1.2",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "config": "^1.26.2",
     "cors": "^2.8.4",
@@ -34,6 +34,7 @@
     "graphql-subscriptions": "^0.5.3",
     "graphql-type-json": "^0.1.4",
     "kafka-node": "^2.2.3",
+    "lodash": "^4.17.4",
     "nodemon": "^1.12.1",
     "subscriptions-transport-ws": "^0.8.3",
     "zookeeper": "^3.4.9-3"

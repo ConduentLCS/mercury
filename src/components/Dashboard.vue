@@ -6,7 +6,7 @@
           widget(:icon="widget.icon" :color="widget.color" :title="widget.title" :count="widget.count")
       #services.ui.grid
         .column
-          .ui.raised.card
+          #zookeepers.ui.raised.card
             .content.head
               i.right.floated.large.eye.icon
               .header Zookeepers
@@ -16,7 +16,7 @@
               .description
                 zookeepers
         .column
-          .ui.raised.card
+          #brokers.ui.raised.card
             .content.head
               i.right.floated.large.handshake.icon
               .header Kafka Brokers
@@ -26,7 +26,7 @@
               .description
                 brokers
         .column
-          .ui.raised.card
+          #consumers.ui.raised.card
             .content.head
               i.right.floated.large.users.icon
               .header Consumers
@@ -35,9 +35,7 @@
             .content
               .description
                 consumers
-        #explorer.hint(v-if="!topic")
-          i.fa.fa-terminal
-          | Select a Topic to Open Explorer
+      topicExplorer
 </template>
 
 <script>
@@ -45,14 +43,12 @@
   import Zookeepers from '@/components/ZookeeperList';
   import Brokers from '@/components/BrokerList';
   import Consumers from '@/components/ConsumerList';
+  import TopicExplorer from '@/components/TopicExplorer';
 
   export default {
     computed: {
       cluster() {
         return this.$store.state.cluster;
-      },
-      topic() {
-        return this.$store.state.topic;
       },
       widgets() {
         const topicCount = this.$store.state.topics.length;
@@ -68,7 +64,7 @@
         ];
       }
     },
-    components: { Widget, Zookeepers, Brokers, Consumers }
+    components: { Widget, Zookeepers, Brokers, Consumers, TopicExplorer }
   };
 </script>
 
@@ -108,20 +104,28 @@
       }
       .content.head { flex-grow: 0 }
     }
-    #explorer.hint {
-      display: flex;
-      flex: 1;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 2.2em 0;
-      height: 8em;
-      color: #474747;
-      font-size: 2em;
-      i { margin-right: 0.5em }
-      @media(max-width: 425px) {
-        text-align: center;
-        line-height: 2em;
+    #zookeepers {
+      border-top: 2px solid #EF5350;
+      .fa-stack {
+        float: right;
+        i { color: #FFC107 }
+      }
+    }
+    #brokers {
+      border-top: 2px solid #42A5F5;
+      .fa-arrow-up { color: #43A047 }
+      .fa-arrow-down { color: #E53935 }
+      .fa { margin-right: 2px }
+    }
+    #consumers {
+      border-top: 2px solid #9CCC65;
+      .ui.input {
+        width: 100%;
+        font-size: 0.8em;
+      }
+      .ui.list {
+        margin: 0.5em 0 0;
+        height: 20.5em !important;
       }
     }
   }

@@ -6,24 +6,19 @@
       .no.cluster(v-else)
         i.large.sitemap.icon
         |  Select a Cluster
-      topicExplorer(v-if="topic")
 </template>
 
 <script>
   import Sidebar from '@/components/Sidebar';
-  import TopicExplorer from '@/components/TopicExplorer';
   import Dashboard from '@/components/Dashboard';
 
   export default {
     computed: {
       cluster() {
         return this.$store.state.cluster;
-      },
-      topic() {
-        return this.$store.state.topic;
       }
     },
-    components: { Sidebar, TopicExplorer, Dashboard }
+    components: { Sidebar, Dashboard }
   };
 </script>
 

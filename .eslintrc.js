@@ -40,6 +40,7 @@ module.exports = {
     'comma-dangle': 'off',
     // allow debugger during development
     'no-console': 'warn',
+    'no-underscore-dangle': 'off',
     'no-param-reassign': 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-new': 'off'

@@ -1,45 +1,47 @@
 <template lang="pug">
-  #consumers
-    transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap" appear)
-      .list(key="list" v-if="!this.inspecting")
-        .ui.fluid.search
-          .ui.icon.input
-            input(type="text" placeholder="Search Consumers..." v-model="query")
-            i.search.icon
-        .ui.middle.aligned.selection.list
-          .item(
-              v-for="consumer in filteredConsumers"
-              :key="consumer.group"
-              @click="inspect(consumer.group)"
-          )
-            .content
-              .header
-                | {{ consumer.group }}
-              .description Topics: #[b {{ consumer.topicCount }}]
-      .metrics(v-else key="individual")
-        .centered-container(v-if="loading > 0")
-          spinner.spinner(
-            size="medium"
-            line-fg-color="#E37D00"
-            line-bg-color="#FFF"
-          )
-        template(v-else)
-          h4.breadcrumb
-            i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
-            | {{ this.inspecting }}
-          h3.no-metrics(v-if="!consumer.topics")
-            | No Topics
-          table.ui.very.basic.sortable.compact.stackable.celled.table(v-else)
+  transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap" appear)
+    .list(key="list" v-if="!this.inspecting")
+      .ui.fluid.search
+        .ui.icon.input
+          input(type="text" placeholder="Search Consumers..." v-model="query")
+          i.search.icon
+      .ui.middle.aligned.selection.list
+        .item(
+            v-for="consumer in filteredConsumers"
+            :key="consumer.group"
+            @click="inspect(consumer.group)"
+        )
+          .content
+            .header
+              | {{ consumer.group }}
+    .metrics(v-else key="individual")
+      .centered-container(v-if="loading > 0")
+        spinner.spinner(
+          size="medium"
+          line-fg-color="#E37D00"
+          line-bg-color="#FFF"
+        )
+      template(v-else)
+        h4.breadcrumb
+          i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
+          | {{ this.inspecting }}
+        h3.no-metrics(v-if="!consumer.topics.length")
+          | No Topics
+        .consumer-topic(v-for="topic in consumer.topics" v-else)
+          p #[b Topic:] {{ topic.name }}
+          table.ui.sortable.very.compact.stackable.celled.table
             thead
               tr
-                th Topic
+                th Partition
                 th Offset
-                th Partitions
+                th Watermark
+                th Lag
             tbody
-              tr(v-for="topic in consumer.topics")
-                td {{ topic.name }}
-                td {{ topic.offset }}
-                td {{ topic.partitions }}
+              tr(v-for="offset in topic.offsets")
+                td {{ offset.partition }}
+                td {{ offset.current || 'N/A' }}
+                td {{ offset.offset }}
+                td(:class="getLagClass(offset.lag)") {{ offset.lag }}
 </template>
 
 <script>
@@ -54,7 +56,6 @@
           cluster(address: $address) {
             consumers {
               group
-              topicCount
             }
           }
         }`,
@@ -79,8 +80,7 @@
             consumer(group: $group) {
               topics {
                 name
-                offset
-                partitions
+                offsets
               }
             }
           }
@@ -118,6 +118,12 @@
       },
       bootstrap() {
         $('#consumers .ui.table').tablesort();
+      },
+      getLagClass(offset) {
+        return {
+          positive: offset === 0,
+          negative: offset !== 0
+        };
       }
     },
     updated() {
@@ -128,14 +134,6 @@
 </script>
 
 <style lang="scss" scoped>
-  #consumers {
-    .ui.input {
-      width: 100%;
-      font-size: 0.8em;
-    }
-    .ui.list {
-      margin: 0.5em 0 0;
-      height: 20.5em !important;
-    }
-  }
+  .consumer-topic { margin-bottom: 1em }
 </style>
+

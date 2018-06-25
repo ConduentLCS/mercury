@@ -1,43 +1,42 @@
 <template lang="pug">
-  #zookeepers
-    transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap" appear)
-      .list(key="list" v-if="!this.inspecting")
-        .ui.middle.aligned.selection.list
-          .item(
-              v-for="zk in zookeepers"
-              :key="zk.hostname"
-              @click="inspect(zk.hostname)"
-          )
-            .content
-              .header
-                | {{ zk.hostname }}
-                template(v-if="zk.isLeader")
-                  span.fa-stack(data-content="This node is currently the leader" data-position="top center")
-                    i.fa.fa-square-o.fa-stack-2x
-                    i.fa.fa-star.fa-stack-1x
-              .description Average Latency: #[b {{ zk.latency }}]
-      .metrics(v-else key="individual")
-        .centered-container(v-if="loading > 0")
-          spinner.spinner(
-            size="medium"
-            line-fg-color="#E37D00"
-            line-bg-color="#FFF"
-          )
-        template(v-else)
-          h4.breadcrumb
-            i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
-            | {{ this.inspecting }}
-          h3.no-metrics(v-if="!zookeeper.metrics")
-            | No Metrics
-          table.ui.very.basic.sortable.compact.stackable.celled.table(v-else)
-            thead
-              tr
-                th Metric
-                th Value
-            tbody
-              tr(v-for="metric in zookeeper.metrics")
-                td {{ metric.metric }}
-                td {{ metric.value }}
+  transition(name="fade" mode="out-in" enter-active-class="animated fadeIn" @after-enter="bootstrap" appear)
+    .list(key="list" v-if="!this.inspecting")
+      .ui.middle.aligned.selection.list
+        .item(
+            v-for="zk in zookeepers"
+            :key="zk.hostname"
+            @click="inspect(zk.hostname)"
+        )
+          .content
+            .header
+              | {{ zk.hostname }}
+              template(v-if="zk.isLeader")
+                span.fa-stack(data-content="This node is currently the leader" data-position="top center")
+                  i.fa.fa-square-o.fa-stack-2x
+                  i.fa.fa-star.fa-stack-1x
+            .description Average Latency: #[b {{ zk.latency }}]
+    .metrics(v-else key="individual")
+      .centered-container(v-if="loading > 0")
+        spinner.spinner(
+          size="medium"
+          line-fg-color="#E37D00"
+          line-bg-color="#FFF"
+        )
+      template(v-else)
+        h4.breadcrumb
+          i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
+          | {{ this.inspecting }}
+        h3.no-metrics(v-if="!zookeeper.metrics")
+          | No Metrics
+        table.ui.sortable.very.compact.stackable.celled.table(v-else)
+          thead
+            tr
+              th Metric
+              th Value
+          tbody
+            tr(v-for="metric in zookeeper.metrics")
+              td {{ metric.metric | mapMetric }}
+              td {{ metric.value }}
 </template>
 
 <script>
@@ -111,15 +110,32 @@
     updated() {
       this.bootstrap();
     },
+    filters: {
+      mapMetric(metric) {
+        const map = {
+          zk_avg_latency: 'Average Latency',
+          zk_max_latency: 'Max Latency',
+          zk_min_latency: 'Min Latency',
+          zk_packets_received: 'Packets Received',
+          zk_packets_sent: 'Packets Sent',
+          zk_num_alive_connections: 'Alive Connections',
+          zk_outstanding_requests: 'Outstanding Requests',
+          zk_server_state: 'Mode',
+          zk_znode_count: 'Node Count',
+          zk_watch_count: 'Watch Count',
+          zk_ephemerals_count: 'Ephemerals Count',
+          zk_approximate_data_size: 'Approximate Data Size',
+          zk_open_file_descriptor_count: 'File Descriptors',
+          zk_max_file_descriptor_count: 'Max File Descriptors',
+          zk_followers: 'Follower Count',
+          zk_synced_followers: 'Synchronized Followers',
+          zk_pending_syncs: 'Pending Syncs',
+          zk_version: 'Version'
+        };
+
+        return map[metric] || metric;
+      }
+    },
     components: { Spinner }
   };
 </script>
-
-<style lang="scss" scoped>
-  #zookeepers {
-    .fa-stack {
-      float: right;
-      i { color: #FFC107 }
-    }
-  }
-</style>
