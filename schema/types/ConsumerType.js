@@ -1,21 +1,21 @@
 const {
   GraphQLObjectType,
   GraphQLString,
-  GraphQLInt,
   GraphQLList
 } = require('graphql');
 
-const TopicType = require('./TopicType');
+const ConsumerTopicType = require('./ConsumerTopicType');
 
 const ConsumerType = new GraphQLObjectType({
   name: 'Consumer',
   fields: {
     group: { type: GraphQLString },
-    topicCount: {
-      type: GraphQLInt,
-      resolve: consumer => consumer.topics.length
-    },
-    topics: { type: new GraphQLList(TopicType) }
+    topics: {
+      type: new GraphQLList(ConsumerTopicType),
+      resolve: (consumer, args, context) => {
+        return context.cluster.fetchConsumerTopics(consumer.group);
+      }
+    }
   }
 });
 

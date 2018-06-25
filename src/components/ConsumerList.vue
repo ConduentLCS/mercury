@@ -14,7 +14,6 @@
           .content
             .header
               | {{ consumer.group }}
-            .description Topics: #[b {{ consumer.topicCount }}]
     .metrics(v-else key="individual")
       .centered-container(v-if="loading > 0")
         spinner.spinner(
@@ -26,19 +25,23 @@
         h4.breadcrumb
           i.link.arrow.left.icon(@click="inspect(null)" title="Back to list")
           | {{ this.inspecting }}
-        h3.no-metrics(v-if="!consumer.topics")
+        h3.no-metrics(v-if="!consumer.topics.length")
           | No Topics
-        table.ui.sortable.very.compact.stackable.celled.table(v-else)
-          thead
-            tr
-              th Topic
-              th Offset
-              th Partitions
-          tbody
-            tr(v-for="topic in consumer.topics")
-              td {{ topic.name }}
-              td {{ topic.offset }}
-              td {{ topic.partitions }}
+        .consumer-topic(v-for="topic in consumer.topics" v-else)
+          p #[b Topic:] {{ topic.name }}
+          table.ui.sortable.very.compact.stackable.celled.table
+            thead
+              tr
+                th Partition
+                th Offset
+                th Watermark
+                th Lag
+            tbody
+              tr(v-for="offset in topic.offsets")
+                td {{ offset.partition }}
+                td {{ offset.current || 'N/A' }}
+                td {{ offset.offset }}
+                td(:class="getLagClass(offset.lag)") {{ offset.lag }}
 </template>
 
 <script>
@@ -53,7 +56,6 @@
           cluster(address: $address) {
             consumers {
               group
-              topicCount
             }
           }
         }`,
@@ -78,8 +80,7 @@
             consumer(group: $group) {
               topics {
                 name
-                offset
-                partitions
+                offsets
               }
             }
           }
@@ -117,6 +118,12 @@
       },
       bootstrap() {
         $('#consumers .ui.table').tablesort();
+      },
+      getLagClass(offset) {
+        return {
+          positive: offset === 0,
+          negative: offset !== 0
+        };
       }
     },
     updated() {
@@ -125,3 +132,8 @@
     components: { Spinner }
   };
 </script>
+
+<style lang="scss" scoped>
+  .consumer-topic { margin-bottom: 1em }
+</style>
+

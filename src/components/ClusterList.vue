@@ -1,18 +1,22 @@
 <template lang="pug">
-  spinner(
-    v-if="loading > 0"
-    size="medium"
-    line-fg-color="#E37D00"
-    line-bg-color="#262B33"
-  )
-  .cluster-list.ui.form(v-else)
-    .grouping(v-for="(clusters, datacenter) in grouped")
-      | {{ datacenter }}
-      .grouped.fields
-        .field(v-for="(address, alias) in clusters")
-          .ui.radio.checkbox
-            input.vue(:id="address" type="radio" name="cluster" :value="address" v-model="cluster")
-            label(:for="address") {{ alias }}
+  .cluster-list
+    .title
+      i.fa.fa-sitemap.symbol
+      | Clusters
+    spinner(
+      v-if="loading > 0"
+      size="medium"
+      line-fg-color="#E37D00"
+      line-bg-color="#262B33"
+    )
+    .ui.form.inverted(v-else)
+      .grouping(v-for="(clusters, datacenter) in grouped")
+        | {{ datacenter }}
+        .grouped.fields
+          .field(v-for="(address, alias) in clusters")
+            .ui.radio.checkbox
+              input.vue(:id="address" type="radio" name="cluster" :value="address" v-model="cluster")
+              label(:for="address") {{ alias }}
 </template>
 
 <script>
@@ -58,6 +62,8 @@
 <style lang="scss" scoped>
   .ui.form {
     padding: 0em 1em 1em;
+    overflow-y: auto;
+    overflow-x: hidden; 
     .grouping {
       font-size: 1.2em;
       font-weight: bold;

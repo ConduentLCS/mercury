@@ -1,28 +1,36 @@
 <template lang="pug">
   .topic-list
-    spinner.spinner(
-      v-if="loading > 0"
-      size="medium"
-      line-fg-color="#E37D00"
-      line-bg-color="#262B33"
-    )
-    template(v-else)
-      .ui.fluid.search
-        .ui.icon.input
-          input(type="text" placeholder="Search Topics..." v-model="query")
-          i.search.icon
-      .ui.middle.aligned.inverted.selection.list
-        .item(
-            v-for="topic in filteredTopics"
-            v-on:click="setTopic(topic)"
-            :key="topic.name"
-            :class="{ active: active(topic.name) }"
-        )
-          .content
-            .header
-              | {{ topic.name }}
-              i.check.icon(v-if="active(topic.name)")
-            .description Partitions: #[b {{ topic.partitions }}]
+    .title
+      i.fa.fa-send.symbol
+      | Topics
+    template(v-if="cluster")
+      spinner.spinner(
+        v-if="loading > 0"
+        size="medium"
+        line-fg-color="#E37D00"
+        line-bg-color="#262B33"
+      )
+      template(v-else)
+        .ui.fluid.search
+          .ui.icon.input
+            input(type="text" placeholder="Search Topics..." v-model="query")
+            i.search.icon
+        .ui.middle.aligned.inverted.selection.list
+          .item(
+              v-for="topic in filteredTopics"
+              v-on:click="setTopic(topic)"
+              :key="topic.name"
+              :class="{ active: active(topic.name) }"
+          )
+            .content
+              .header
+                | {{ topic.name }}
+                i.check.icon(v-if="active(topic.name)")
+              .description Partitions: #[b {{ topic.partitions }}]
+    .no.cluster.content(v-else)
+      .hint
+        | Select a Cluster
+        i.fa.fa-arrow-up
 </template>
 
 <script>
@@ -45,6 +53,9 @@
           return {
             address: this.$store.state.cluster
           };
+        },
+        skip() {
+          return !this.cluster;
         },
         update(data) {
           return data.cluster.topics;
@@ -70,6 +81,9 @@
       },
       topic() {
         return this.$store.state.topic;
+      },
+      cluster() {
+        return this.$store.state.cluster;
       }
     },
     methods: {
@@ -115,7 +129,8 @@
       transform: translateY(30px);
     }
     .ui.list {
-      overflow: auto; 
+      overflow-y: auto;
+      overflow-x: hidden; 
       .item { margin-right: 2px }
       .header { word-break: break-all }
     }
