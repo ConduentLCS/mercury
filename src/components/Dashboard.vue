@@ -35,9 +35,7 @@
             .content
               .description
                 consumers
-        #explorer.hint(v-if="!topic")
-          i.fa.fa-terminal
-          | Select a Topic to Open Explorer
+      topicExplorer
 </template>
 
 <script>
@@ -45,14 +43,12 @@
   import Zookeepers from '@/components/ZookeeperList';
   import Brokers from '@/components/BrokerList';
   import Consumers from '@/components/ConsumerList';
+  import TopicExplorer from '@/components/TopicExplorer';
 
   export default {
     computed: {
       cluster() {
         return this.$store.state.cluster;
-      },
-      topic() {
-        return this.$store.state.topic;
       },
       widgets() {
         const topicCount = this.$store.state.topics.length;
@@ -68,7 +64,7 @@
         ];
       }
     },
-    components: { Widget, Zookeepers, Brokers, Consumers }
+    components: { Widget, Zookeepers, Brokers, Consumers, TopicExplorer }
   };
 </script>
 
@@ -107,22 +103,6 @@
         }
       }
       .content.head { flex-grow: 0 }
-    }
-    #explorer.hint {
-      display: flex;
-      flex: 1;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 2.2em 0;
-      height: 8em;
-      color: #474747;
-      font-size: 2em;
-      i { margin-right: 0.5em }
-      @media(max-width: 425px) {
-        text-align: center;
-        line-height: 2em;
-      }
     }
     #zookeepers {
       border-top: 2px solid #EF5350;

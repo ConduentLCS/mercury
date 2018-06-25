@@ -55,16 +55,17 @@ const ClusterType = new GraphQLObjectType({
     consumers: {
       type: new GraphQLList(ConsumerType),
       description: 'Consumer groups registed in a given cluster',
-      resolve: () => db.consumers
+      resolve: cluster => cluster.getConsumers()
     },
     consumer: {
       type: ConsumerType,
       args: {
         group: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (context, args) => (
-        addLatency(db.consumers.find(consumer => consumer.group === args.group), 1500)
-      )
+      resolve: (cluster, { group }, context) => {
+        context.group = group;
+        return { group };
+      }
     }
   }
 });
