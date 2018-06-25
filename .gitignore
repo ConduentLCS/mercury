@@ -33,3 +33,5 @@ schema.graphql
 # Semantic UI
 semantic
 
+# Vagrant
+.vagrant

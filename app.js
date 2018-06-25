@@ -38,7 +38,9 @@ server.use('/graphiql', graphiqlExpress({
 
 const ws = createServer(server);
 
+const host = process.env.host || '0.0.0.0';
 const port = process.env.port || 4000;
+
 
 if (process.env.NODE_ENV === 'development') {
   const proxyTable = environment.dev.proxyTable;
@@ -85,7 +87,7 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
-ws.listen(port, () => {
+ws.listen(port, host, () => {
   console.log(`GraphQL server hosted at localhost:${port}/graphql`);
 
   new SubscriptionServer({

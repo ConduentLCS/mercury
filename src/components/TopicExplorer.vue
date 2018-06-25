@@ -35,12 +35,13 @@
           .message(
             v-for="message in messages"
             @click="inspect(message)"
-          )
-            .text(v-html="highlight(message.data)")
+          ) 
+            .text(v-html="highlight(message.value)")
             .meta
               .offset
-                | Offset: {{ message.offset }} |
-                | Partition: {{ message.partition }}
+                | Key: {{ message.key }} | 
+                | Partition: {{ message.partition }} |
+                | Offset: {{ message.offset }}
               .time
                 | {{ message.timestamp | date }}
         pre.viewer
@@ -69,8 +70,10 @@
             newMessage(topic: $topic, cluster: $cluster) {
               offset
               partition
+              highWaterOffset
+              key
+              value
               timestamp
-              data
             }
           }`,
           variables() {
@@ -118,7 +121,9 @@
       pretty() {
         if (!this.message) return '';
         try {
-          return jsonMarkup(JSON.parse(this.message.data));
+          const value = JSON.parse(this.message.value);
+          const data = { key: this.message.key, value };
+          return jsonMarkup(data);
         } catch (e) {
           return '<div class="issue">Message cannot be parsed</div>';
         }
