@@ -13,9 +13,9 @@
             .description
               | Bytes: 
               i.fa.fa-arrow-up
-              b {{ broker.bytesUp }} 
+              b {{ broker.bytesUp || 'N/A' }} 
               i.fa.fa-arrow-down
-              b {{ broker.bytesDown }}
+              b {{ broker.bytesDown || 'N/A' }}
     .metrics(v-else key="individual")
       .centered-container(v-if="loading > 0")
         spinner.spinner(

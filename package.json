@@ -34,6 +34,7 @@
     "graphql": "@0.10.5",
     "graphql-subscriptions": "^0.5.3",
     "graphql-type-json": "^0.1.4",
+    "jmx": "^0.6.1",
     "kafka-node": "^2.2.3",
     "lodash": "^4.17.4",
     "nodemon": "^1.12.1",
