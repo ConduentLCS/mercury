@@ -1,5 +1,9 @@
 # mercury
 
+⚠️ **This project is no longer under active development**
+
+We are looking for contributors to bring this tool to a stable release
+
 > A tool for monitoring the Confluent platform.
 
 ## Table of contents
@@ -45,7 +49,7 @@ Using the [Yarn](https://yarnpkg.com/) package manager, fetch the required modul
 # Install dependencies
 yarn install
 ```
-   
+
 ### 4. Start the application
 To start the development server run the below command
 ```bash
