@@ -4,8 +4,6 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:3.3.0
     network_mode: host
-    ports:
-      - 32181:32181
     environment:
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
@@ -13,11 +11,11 @@ services:
   kafka:
     image: confluentinc/cp-kafka:3.3.0
     network_mode: host
-    ports:
-      - 29092:29092
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: localhost:32181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.42.10:29092
+      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=192.168.42.10 -Djava.net.preferIPv4Stack=true"
+      JMX_PORT: 9000

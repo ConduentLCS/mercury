@@ -41,7 +41,7 @@ const ClusterType = new GraphQLObjectType({
     kafkaBrokers: {
       type: new GraphQLList(KafkaBrokerType),
       description: 'Kafka Brokers that are active in a given cluster',
-      resolve: () => db.brokers
+      resolve: cluster => cluster.getBrokers()
     },
     kafkaBroker: {
       type: KafkaBrokerType,
