@@ -35,3 +35,4 @@ semantic
 
 # Vagrant
 .vagrant
+.yarn
