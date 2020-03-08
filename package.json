@@ -1,6 +1,6 @@
 {
   "name": "mercury",
-  "version": "1.22.0",
+  "version": "1.0.1",
   "description": "A tool for analyzing the Confluent platform.",
   "author": "Andrew Fake <andrew.fake@clcs.conduent.com>",
   "private": true,
