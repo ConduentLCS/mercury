@@ -23,7 +23,7 @@
     "metrics"
   ],
   "dependencies": {
-    "apollo-server-express": "^1.1.2",
+    "apollo-server-express": "^2.14.2",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "config": "^1.26.2",
