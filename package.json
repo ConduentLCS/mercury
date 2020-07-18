@@ -35,7 +35,7 @@
     "graphql-type-json": "^0.1.4",
     "jmx": "^0.6.1",
     "kafka-node": "^2.2.3",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "nodemon": "^1.12.1",
     "subscriptions-transport-ws": "^0.8.3",
     "zookeeper": "^3.4.9-3"
